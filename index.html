@@ -5,47 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lky Bot Privacy Policy</title>
     <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes buttonPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
             color: #333;
             margin: 0;
             padding: 20px;
+            animation: fadeIn 1s ease-in-out;
         }
-        h1 {
-            color: #333;
+        h1, h2 {
+            animation: slideIn 1s ease-in-out;
         }
-        h2 {
-            color: #444;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1.2s ease-in-out;
         }
         p {
             font-size: 1.1rem;
+            margin-bottom: 15px;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        ul {
+            margin-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #2193b0;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #6dd5ed;
         }
         footer {
             text-align: center;
             margin-top: 40px;
             font-size: 0.9rem;
-            color: #777;
+            color: #555;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        .support-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 15px 30px;
+            background-color: #2193b0;
+            color: white;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+            animation: buttonPulse 2s infinite;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .support-button:hover {
+            background-color: #6dd5ed;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Lky Bot Privacy Policy</h1>
-        <p>Effective Date: [Insert Date]</p>
-        
+        <p><strong>Effective Date:</strong> [Insert Date]</p>
+
         <h2>1. Introduction</h2>
         <p>Welcome to Lky! Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you interact with the Lky Bot on Discord.</p>
-        
+
         <h2>2. Information We Collect</h2>
         <p>When you use Lky, we may collect the following information:</p>
         <ul>
@@ -83,8 +129,9 @@
         <p>We may update this Privacy Policy from time to time. Any changes will be posted here with an updated effective date. Please check this page periodically for updates.</p>
 
         <h2>9. Contact Us</h2>
-        <p>If you have any questions about this Privacy Policy or would like to exercise your rights regarding your data, please contact us at:</p>
-        <p>Email: [Insert your contact email]</p>
+        <p>If you have any questions about this Privacy Policy or would like to exercise your rights regarding your data, please join our support Discord server:</p>
+
+        <a class="support-button" href="https://discord.gg/U485Yncxcc" target="_blank">Join Support Server</a>
 
         <footer>
             <p>&copy; [Insert Year] Lky Bot. All rights reserved.</p>
