@@ -4,312 +4,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lky Privacy Policy</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
-
-        :root {
-            --primary: #4b0082;
-            --secondary: #9370db;
-            --accent: #ba68c8;
-            --text: #e6d4ff;
-            --header: #d8b9ff;
-            --glass: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Space Grotesk', sans-serif;
+            background: #1a1a2e;
+            color: #eaeaea;
         }
 
-        body {
-            background: #0a0a0a;
-            min-height: 100vh;
-            overflow-x: hidden;
-            color: var(--text);
-        }
-
-        #canvas-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        .noise {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVfk6YAAAACHRSTlMoACgQBAg4GBAIp6AAAAA1SURBVDjLY2AYBaNg2AJGZQYGZmUGBjYlBgYuJQYGfgUGBkcFBgZfOQYGGBCVYxgFo2CgAQAgphBpDqzyAwAAAABJRU5ErkJggg==');
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .header {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 6rem;
-            font-weight: 700;
-            color: var(--header);
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            margin-bottom: 2rem;
-            text-align: center;
-            animation: floatTitle 4s ease-in-out infinite;
-        }
-
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            perspective: 2000px;
-        }
-
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            min-height: 300px;
-        }
-
-        .card:hover {
-            transform: translateZ(20px);
-            box-shadow: 0 0 30px rgba(186, 104, 200, 0.3);
-        }
-
-        h2 {
-            color: var(--header);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        p {
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .support-button {
-            display: inline-block;
-            padding: 1.5rem 3rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+        header {
+            background: linear-gradient(45deg, #4b0082, #9370db);
             color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            border: none;
-            cursor: pointer;
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        header p {
             font-size: 1.2rem;
+            margin: 0.5rem 0 0;
         }
 
-        .support-button:hover {
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+
+        section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        section:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(147, 112, 219, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
         }
 
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transform-origin: 0%;
-            transform: scaleX(0);
-            z-index: 1000;
+        section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #ff80bf;
         }
 
-        @keyframes floatTitle {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 3rem;
-                letter-spacing: 4px;
-            }
-
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-
-            .card {
-                min-height: auto;
-            }
+        section p {
+            line-height: 1.6;
         }
 
         footer {
             text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-            border-top: 1px solid var(--glass);
+            padding: 1rem;
+            background: #111;
+            color: #aaa;
+        }
+
+        .glow-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #6a1b9a, #8e44ad);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(128, 0, 128, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glow-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(128, 0, 128, 0.7);
         }
     </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div class="noise"></div>
-    <div class="progress-bar"></div>
-
-    <main class="container">
-        <section class="header">
-            <h1>Lky Privacy Policy</h1>
-            <button class="support-button">Explore Policy</button>
+    <header>
+        <h1>Lky Privacy Policy</h1>
+        <p>Your privacy is our priority</p>
+    </header>
+    <main>
+        <section>
+            <h2>Introduction</h2>
+            <p>Welcome to Lky! This privacy policy outlines how we handle your data responsibly.</p>
         </section>
-
-        <div class="cards-container">
-            <div class="card">
-                <h2>1. Introduction</h2>
-                <p>Thank you for using Lky! Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you interact with Lky on Discord.</p>
-            </div>
-
-            <div class="card">
-                <h2>2. Information We Collect</h2>
-                <p>When you use Lky, we may collect the following information:</p>
-                <p>- User Messages: Lky may store messages sent in the server where the bot is active to perform certain functions.</p>
-                <p>- Discord User ID: Lky collects your Discord user ID to identify you and provide personalized responses.</p>
-                <p>- Server Information: Lky may store basic information about Discord servers for customized features.</p>
-            </div>
-
-            <div class="card">
-                <h2>3. How We Use Your Information</h2>
-                <p>The information we collect is used to:</p>
-                <p>- Provide and improve the functionality of Lky Bot.</p>
-                <p>- Respond to user commands and inquiries.</p>
-                <p>- Track and analyze usage to improve performance.</p>
-            </div>
-
-            <div class="card">
-                <h2>4. Data Retention</h2>
-                <p>We store the collected information only for as long as necessary to provide our services. We do not store user messages indefinitely. If you no longer want your data stored, you can request us to delete your data by contacting us.</p>
-            </div>
-
-            <div class="card">
-                <h2>5. Data Security</h2>
-                <p>We take reasonable precautions to protect your information from unauthorized access, alteration, or destruction. However, please note that no data transmission method over the internet is 100% secure, and we cannot guarantee the absolute security of your data.</p>
-            </div>
-
-            <div class="card">
-                <h2>6. Sharing Your Information</h2>
-                <p>We do not sell or share your personal information with third parties, except where required by law or when necessary to provide our services. We may share data with trusted third-party services for hosting or technical support, but they are not allowed to use your data for any other purposes.</p>
-            </div>
-
-            <div class="card">
-                <h2>7. Your Rights</h2>
-                <p>You have the right to:</p>
-                <p>- Access your data and request information about how it is used.</p>
-                <p>- Request the deletion of your data.</p>
-                <p>- Contact us with any privacy-related concerns or questions.</p>
-            </div>
-
-            <div class="card">
-                <h2>8. Changes to This Privacy Policy</h2>
-                <p>We may update this Privacy Policy from time to time. Any changes will be posted here with an updated effective date. Please check this page periodically for updates.</p>
-            </div>
-
-            <div class="card">
-                <h2>9. Contact Us</h2>
-                <p>If you have any questions about this Privacy Policy or would like to exercise your rights regarding your data, please join our support Discord server:</p>
-                <a href="https://discord.gg/U485Yncxcc" class="support-button" target="_blank">Join Support Server</a>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2024 LunarDevs™. All rights reserved.</p>
-        </footer>
+        <section>
+            <h2>Data Collection</h2>
+            <p>We collect minimal data to improve your experience. This includes basic information like your email address and usage patterns.</p>
+        </section>
+        <section>
+            <h2>Data Usage</h2>
+            <p>Your data is used to provide better services, improve our platform, and ensure security. We do not sell your data to third parties.</p>
+        </section>
+        <section>
+            <h2>Your Rights</h2>
+            <p>You have the right to access, update, or delete your data. Contact us if you have any concerns or requests regarding your information.</p>
+        </section>
+        <section>
+            <h2>Contact Us</h2>
+            <p>If you have any questions about this privacy policy, feel free to reach out to us at <a href="mailto:support@lky.com">support@lky.com</a>.</p>
+            <a href="mailto:support@lky.com" class="glow-button">Contact Support</a>
+        </section>
     </main>
-
-    <script>
-        // Three.js Background
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        container.appendChild(renderer.domElement);
-
-        const geometry = new THREE.IcosahedronGeometry(20, 1);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x9370db,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
-        });
-
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(0, 0, 1);
-        scene.add(light);
-
-        camera.position.z = 50;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            sphere.rotation.x += 0.001;
-            sphere.rotation.y += 0.002;
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // Scroll progress
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const max = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrolled / max) * 100;
-            document.querySelector('.progress-bar').style.transform = `scaleX(${progress / 100})`;
-        });
-
-        // Smooth scroll for "Explore Policy" button
-        document.querySelector('.support-button').addEventListener('click', () => {
-            const cardsSection = document.querySelector('.cards-container');
-            cardsSection.scrollIntoView({ behavior: 'smooth' });
-        });
-    </script>
+    <footer>
+        <p>&copy; 2024 Lky. All rights reserved.</p>
+    </footer>
 </body>
 </html>
