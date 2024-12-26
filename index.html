@@ -106,24 +106,6 @@
             box-shadow: 0 0 30px rgba(186, 104, 200, 0.3);
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(
-                circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-                rgba(255, 255, 255, 0.1),
-                transparent 50%
-            );
-            opacity: 0;
-            transition: opacity 0.3s;
-            border-radius: 24px;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
         h2 {
             color: var(--header);
             font-size: 1.8rem;
@@ -132,40 +114,10 @@
             display: inline-block;
         }
 
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.5s ease;
-        }
-
-        .card:hover h2::after {
-            width: 100%;
-        }
-
-        p, li {
+        p {
             line-height: 1.8;
             margin-bottom: 1rem;
             font-size: 1.1rem;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        ul {
-            list-style-type: none;
-            padding-left: 1.5rem;
-        }
-
-        li::before {
-            content: '→';
-            color: var(--accent);
-            position: absolute;
-            left: 0;
-            margin-left: -1.5rem;
         }
 
         .support-button {
@@ -190,26 +142,6 @@
         .support-button:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(147, 112, 219, 0.3);
-        }
-
-        .support-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
-        }
-
-        .support-button:hover::before {
-            left: 100%;
         }
 
         .progress-bar {
@@ -268,7 +200,60 @@
         </section>
 
         <div class="cards-container">
-            <!-- Cards will be dynamically generated -->
+            <div class="card">
+                <h2>1. Introduction</h2>
+                <p>Thank you for using Lky! Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you interact with Lky on Discord.</p>
+            </div>
+
+            <div class="card">
+                <h2>2. Information We Collect</h2>
+                <p>When you use Lky, we may collect the following information:</p>
+                <p>- User Messages: Lky may store messages sent in the server where the bot is active to perform certain functions.</p>
+                <p>- Discord User ID: Lky collects your Discord user ID to identify you and provide personalized responses.</p>
+                <p>- Server Information: Lky may store basic information about Discord servers for customized features.</p>
+            </div>
+
+            <div class="card">
+                <h2>3. How We Use Your Information</h2>
+                <p>The information we collect is used to:</p>
+                <p>- Provide and improve the functionality of Lky Bot.</p>
+                <p>- Respond to user commands and inquiries.</p>
+                <p>- Track and analyze usage to improve performance.</p>
+            </div>
+
+            <div class="card">
+                <h2>4. Data Retention</h2>
+                <p>We store the collected information only for as long as necessary to provide our services. We do not store user messages indefinitely. If you no longer want your data stored, you can request us to delete your data by contacting us.</p>
+            </div>
+
+            <div class="card">
+                <h2>5. Data Security</h2>
+                <p>We take reasonable precautions to protect your information from unauthorized access, alteration, or destruction. However, please note that no data transmission method over the internet is 100% secure, and we cannot guarantee the absolute security of your data.</p>
+            </div>
+
+            <div class="card">
+                <h2>6. Sharing Your Information</h2>
+                <p>We do not sell or share your personal information with third parties, except where required by law or when necessary to provide our services. We may share data with trusted third-party services for hosting or technical support, but they are not allowed to use your data for any other purposes.</p>
+            </div>
+
+            <div class="card">
+                <h2>7. Your Rights</h2>
+                <p>You have the right to:</p>
+                <p>- Access your data and request information about how it is used.</p>
+                <p>- Request the deletion of your data.</p>
+                <p>- Contact us with any privacy-related concerns or questions.</p>
+            </div>
+
+            <div class="card">
+                <h2>8. Changes to This Privacy Policy</h2>
+                <p>We may update this Privacy Policy from time to time. Any changes will be posted here with an updated effective date. Please check this page periodically for updates.</p>
+            </div>
+
+            <div class="card">
+                <h2>9. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy or would like to exercise your rights regarding your data, please join our support Discord server:</p>
+                <a href="https://discord.gg/U485Yncxcc" class="support-button" target="_blank">Join Support Server</a>
+            </div>
         </div>
 
         <footer>
@@ -282,7 +267,7 @@
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         container.appendChild(renderer.domElement);
 
@@ -293,7 +278,7 @@
             transparent: true,
             opacity: 0.3
         });
-        
+
         const sphere = new THREE.Mesh(geometry, material);
         scene.add(sphere);
 
@@ -312,86 +297,6 @@
 
         animate();
 
-        // Privacy Policy Sections
-        const sections = [
-            {
-                title: "1. Introduction",
-                content: "Thank You For Using Lky! Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you interact with Lky on Discord."
-            },
-            {
-                title: "2. Information We Collect",
-                content: `When you use Lky, we may collect the following information:
-                <ul>
-                    <li>User Messages: Lky may store messages sent in the server where the bot is active to perform certain functions.</li>
-                    <li>Discord User ID: Lky collects your Discord user ID to identify you and provide personalized responses.</li>
-                    <li>Server Information: Lky may store basic information about Discord servers for customized features.</li>
-                </ul>`
-            },
-            {
-                title: "3. How We Use Your Information",
-                content: `The information we collect is used to:
-                <ul>
-                    <li>Provide and improve the functionality of Lky Bot</li>
-                    <li>Respond to user commands and inquiries</li>
-                    <li>Track and analyze usage to improve performance</li>
-                </ul>`
-            },
-            {
-                title: "4. Data Retention",
-                content: "We store the collected information only for as long as necessary to provide our services. We do not store user messages indefinitely. If you no longer want your data stored, you can request us to delete your data by contacting us."
-            },
-            {
-                title: "5. Data Security",
-                content: "We take reasonable precautions to protect your information from unauthorized access, alteration, or destruction. However, please note that no data transmission method over the internet is 100% secure, and we cannot guarantee the absolute security of your data."
-            },
-            {
-                title: "6. Sharing Your Information",
-                content: "We do not sell or share your personal information with third parties, except where required by law or when necessary to provide our services. We may share data with trusted third-party services for hosting or technical support, but they are not allowed to use your data for any other purposes."
-            },
-            {
-                title: "7. Your Rights",
-                content: `You have the right to:
-                <ul>
-                    <li>Access your data and request information about how it is used</li>
-                    <li>Request the deletion of your data</li>
-                    <li>Contact us with any privacy-related concerns or questions</li>
-                </ul>`
-            },
-            {
-                title: "8. Changes to This Privacy Policy",
-                content: "We may update this Privacy Policy from time to time. Any changes will be posted here with an updated effective date. Please check this page periodically for updates."
-            },
-            {
-                title: "9. Contact Us",
-                content: `If you have any questions about this Privacy Policy or would like to exercise your rights regarding your data, please join our support Discord server:
-                <a href="https://discord.gg/U485Yncxcc" class="support-button" target="_blank">Join Support Server</a>`
-            }
-        ];
-
-        // Generate cards
-        const cardsContainer = document.querySelector('.cards-container');
-        sections.forEach(section => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <h2>${section.title}</h2>
-                <div class="content">${section.content}</div>
-            `;
-            cardsContainer.appendChild(card);
-        });
-
-        // Card hover effects
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-
         // Scroll progress
         window.addEventListener('scroll', () => {
             const scrolled = window.scrollY;
@@ -404,24 +309,6 @@
         document.querySelector('.support-button').addEventListener('click', () => {
             const cardsSection = document.querySelector('.cards-container');
             cardsSection.scrollIntoView({ behavior: 'smooth' });
-        });
-
-        // Animation for content on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.8s forwards';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.card p, .card li').forEach(el => observer.observe(el));
-
-        // Window resize handler
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
