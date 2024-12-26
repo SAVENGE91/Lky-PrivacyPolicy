@@ -41,16 +41,23 @@
             z-index: -1;
         }
 
-        .noise {
+        .stars {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVfk6YAAAACHRSTlMoACgQBAg4GBAIp6AAAAA1SURBVDjLY2AYBaNg2AJGZQYGZmUGBjYlBgYuJQYGfgUGBkcFBgZfOQYGGBCVYxgFo2CgAQAgphBpDqzyAwAAAABJRU5ErkJggg==');
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: 1;
+            width: 3px;
+            height: 3px;
+            background: white;
+            box-shadow: 0 0 10px white;
+            border-radius: 50%;
+            animation: starAnimation 5s linear infinite;
+        }
+
+        @keyframes starAnimation {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-100vh) scale(2);
+            }
         }
 
         .container {
@@ -67,7 +74,6 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            position: relative;
         }
 
         h1 {
@@ -78,65 +84,91 @@
             letter-spacing: 8px;
             margin-bottom: 2rem;
             text-align: center;
-            animation: floatTitle 4s ease-in-out infinite;
+            text-shadow: 0 0 20px var(--accent);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--accent) 0%, transparent 70%);
+            opacity: 0.2;
+            pointer-events: none;
         }
 
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            perspective: 2000px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out forwards;
+            animation-delay: 0.5s;
         }
 
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            transform-style: preserve-3d;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            min-height: 300px;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transition: 0.5s;
         }
 
         .card:hover {
-            transform: translateZ(20px);
+            transform: translateY(-10px) scale(1.02);
             box-shadow: 0 0 30px rgba(186, 104, 200, 0.3);
+        }
+
+        .card:hover::before {
+            left: 100%;
         }
 
         h2 {
             color: var(--header);
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
-            position: relative;
-            display: inline-block;
         }
 
         p {
             line-height: 1.8;
             margin-bottom: 1rem;
-            font-size: 1.1rem;
         }
 
         .support-button {
-            display: inline-block;
-            padding: 1.5rem 3rem;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
-            text-decoration: none;
+            padding: 1rem 2rem;
+            border: none;
             border-radius: 50px;
-            font-weight: 600;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-top: 2rem;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .support-button:hover {
@@ -144,39 +176,14 @@
             box-shadow: 0 10px 20px rgba(147, 112, 219, 0.3);
         }
 
-        .progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transform-origin: 0%;
-            transform: scaleX(0);
-            z-index: 1000;
-        }
-
-        @keyframes floatTitle {
-            0%, 100% {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
                 transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 3rem;
-                letter-spacing: 4px;
-            }
-
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-
-            .card {
-                min-height: auto;
             }
         }
 
@@ -184,15 +191,21 @@
             text-align: center;
             padding: 2rem;
             margin-top: 4rem;
-            border-top: 1px solid var(--glass);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
         }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
     <div class="noise"></div>
-    <div class="progress-bar"></div>
-
+    <div id="stars"></div>
+    
     <main class="container">
         <section class="header">
             <h1>Lky Privacy Policy</h1>
@@ -262,55 +275,105 @@
     </main>
 
     <script>
-        // Three.js Background
-        const container = document.getElementById('canvas-container');
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        document.addEventListener('DOMContentLoaded', () => {
+            // Three.js setup
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        container.appendChild(renderer.domElement);
+            // Create sphere
+            const geometry = new THREE.IcosahedronGeometry(20, 1);
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x9370db,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
+            });
 
-        const geometry = new THREE.IcosahedronGeometry(20, 1);
-        const material = new THREE.MeshPhongMaterial({
-            color: 0x9370db,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.3
+            const sphere = new THREE.Mesh(geometry, material);
+            scene.add(sphere);
+
+            // Add lighting
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(0, 0, 1);
+            scene.add(light);
+
+            camera.position.z = 50;
+
+            // Create stars
+            const starsDiv = document.getElementById('stars');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'stars';
+                star.style.left = `${Math.random() * 100}vw`;
+                star.style.top = `${Math.random() * 100}vh`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                starsDiv.appendChild(star);
+            }
+
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                sphere.rotation.x += 0.001;
+                sphere.rotation.y += 0.002;
+                renderer.render(scene, camera);
+            }
+
+            // Scroll handler
+            window.addEventListener('scroll', () => {
+                const scrolled = window.scrollY;
+                sphere.position.y = -(scrolled * 0.05);
+                sphere.rotation.y = scrolled * 0.001;
+
+                // Parallax effect for stars
+                const stars = document.querySelectorAll('.stars');
+                stars.forEach(star => {
+                    const speed = parseFloat(star.style.animationDelay);
+                    star.style.transform = `translateY(${-scrolled * speed * 0.1}px)`;
+                });
+
+                // Fade in cards
+                document.querySelectorAll('.card').forEach((card, index) => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        card.style.animation = `fadeInUp 1s ease-out forwards ${index * 0.2}s`;
+                    }
+                });
+            });
+
+            // Mouse move handler for cards
+            document.addEventListener('mousemove', (e) => {
+                document.querySelectorAll('.card').forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    
+                    card.style.transform = `
+                        perspective(1000px)
+                        rotateX(${y * -0.01}deg)
+                        rotateY(${x * 0.01}deg)
+                        translateZ(10px)
+                    `;
+                });
+            });
+
+            animate();
+
+            // Window resize handler
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
         });
 
-        const sphere = new THREE.Mesh(geometry, material);
-        scene.add(sphere);
-
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(0, 0, 1);
-        scene.add(light);
-
-        camera.position.z = 50;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            sphere.rotation.x += 0.001;
-            sphere.rotation.y += 0.002;
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // Scroll progress
-        window.addEventListener('scroll', () => {
-            const scrolled = window.scrollY;
-            const max = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (scrolled / max) * 100;
-            document.querySelector('.progress-bar').style.transform = `scaleX(${progress / 100})`;
-        });
-
-        // Smooth scroll for "Explore Policy" button
+        // Smooth scroll for button
         document.querySelector('.support-button').addEventListener('click', () => {
-            const cardsSection = document.querySelector('.cards-container');
-            cardsSection.scrollIntoView({ behavior: 'smooth' });
+            document.querySelector('.cards-container').scrollIntoView({ behavior: 'smooth' });
         });
     </script>
 </body>
 </html>
-
