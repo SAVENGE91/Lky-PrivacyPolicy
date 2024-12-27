@@ -6,6 +6,8 @@
     <title>Lky Privacy Policy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollToPlugin.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
@@ -30,6 +32,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             color: var(--text);
+            perspective: 1000px;
         }
 
         #canvas-container {
@@ -41,23 +44,22 @@
             z-index: -1;
         }
 
-        .stars {
+        #particles {
             position: fixed;
-            width: 3px;
-            height: 3px;
-            background: white;
-            box-shadow: 0 0 10px white;
-            border-radius: 50%;
-            animation: starAnimation 5s linear infinite;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        @keyframes starAnimation {
-            from {
-                transform: translateY(0);
-            }
-            to {
-                transform: translateY(-100vh) scale(2);
-            }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
         }
 
         .container {
@@ -74,6 +76,22 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.2); opacity: 0.2; }
         }
 
         h1 {
@@ -85,26 +103,22 @@
             margin-bottom: 2rem;
             text-align: center;
             text-shadow: 0 0 20px var(--accent);
-            animation: fadeInUp 1s ease-out;
+            position: relative;
+            animation: glowText 2s ease-in-out infinite;
         }
 
-        .glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, var(--accent) 0%, transparent 70%);
-            opacity: 0.2;
-            pointer-events: none;
+        @keyframes glowText {
+            0%, 100% { text-shadow: 0 0 20px var(--accent); }
+            50% { text-shadow: 0 0 40px var(--accent), 0 0 60px var(--accent); }
         }
 
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            position: relative;
             opacity: 0;
             transform: translateY(50px);
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
         }
 
         .card {
@@ -112,10 +126,13 @@
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            opacity: 0;
+            transform: translateY(30px);
         }
 
         .card::before {
@@ -128,30 +145,46 @@
             background: linear-gradient(
                 90deg,
                 transparent,
-                rgba(255, 255, 255, 0.1),
+                rgba(255, 255, 255, 0.2),
                 transparent
             );
             transition: 0.5s;
         }
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 0 30px rgba(186, 104, 200, 0.3);
+            transform: translateY(-10px) scale(1.02) rotateX(10deg);
+            box-shadow: 0 20px 40px rgba(186, 104, 200, 0.4);
         }
 
         .card:hover::before {
             left: 100%;
         }
 
-        h2 {
+        .card h2 {
             color: var(--header);
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
-        p {
-            line-height: 1.8;
+        .card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .card:hover h2::after {
+            width: 100%;
+        }
+
+        .card p {
             margin-bottom: 1rem;
+            line-height: 1.6;
         }
 
         .support-button {
@@ -162,29 +195,36 @@
             border-radius: 50px;
             font-size: 1.2rem;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
             letter-spacing: 2px;
             position: relative;
             overflow: hidden;
             text-decoration: none;
             display: inline-block;
+            z-index: 1;
+        }
+
+        .support-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+            opacity: 0;
+            transition: 0.3s;
+            z-index: -1;
         }
 
         .support-button:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(147, 112, 219, 0.3);
+            box-shadow: 0 10px 30px rgba(147, 112, 219, 0.5);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .support-button:hover::before {
+            opacity: 1;
         }
 
         footer {
@@ -192,19 +232,39 @@
             padding: 2rem;
             margin-top: 4rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: footerGlow 3s linear infinite;
+        }
+
+        @keyframes footerGlow {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(50%); }
         }
 
         @media (max-width: 768px) {
             h1 {
                 font-size: 3rem;
             }
+            .card {
+                transform: none !important;
+            }
         }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
-    <div class="noise"></div>
-    <div id="stars"></div>
+    <div id="particles"></div>
     
     <main class="container">
         <section class="header">
@@ -284,95 +344,180 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-            // Create sphere
-            const geometry = new THREE.IcosahedronGeometry(20, 1);
+            // Create more complex geometry
+            const geometry = new THREE.TorusKnotGeometry(15, 3, 100, 16);
             const material = new THREE.MeshPhongMaterial({
                 color: 0x9370db,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.3
+                opacity: 0.3,
+                shininess: 100
             });
 
-            const sphere = new THREE.Mesh(geometry, material);
-            scene.add(sphere);
+            const torusKnot = new THREE.Mesh(geometry, material);
+            scene.add(torusKnot);
 
-            // Add lighting
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(0, 0, 1);
-            scene.add(light);
+            // Add multiple lights
+            const lights = [];
+            for (let i = 0; i < 3; i++) {
+                const light = new THREE.PointLight(0xffffff, 0.5);
+                light.position.set(
+                    Math.cos(i * Math.PI * 2 / 3) * 50,
+                    Math.sin(i * Math.PI * 2 / 3) * 50,
+                    30
+                );
+                lights.push(light);
+                scene.add(light);
+            }
+
+            // Add ambient light
+            const ambientLight = new THREE.AmbientLight(0x404040);
+            scene.add(ambientLight);
 
             camera.position.z = 50;
 
-            // Create stars
-            const starsDiv = document.getElementById('stars');
-            for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                star.className = 'stars';
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                starsDiv.appendChild(star);
+            // Particle system
+            const particlesContainer = document.getElementById('particles');
+            const createParticle = () => {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particlesContainer.appendChild(particle);
+
+                gsap.to(particle, {
+                    duration: Math.random() * 3 + 2,
+                    opacity: Math.random() * 0.5,
+                    y: -200,
+                    ease: "power1.out",
+                    onComplete: () => {
+                        particle.remove();
+                        createParticle();
+                    }
+                });
+            };
+
+            // Create initial particles
+            for (let i = 0; i < 50; i++) {
+                createParticle();
             }
+
+            // Initial cards animation
+            gsap.to('.cards-container', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.out"
+            });
 
             // Animation loop
-            function animate() {
+            const animate = () => {
                 requestAnimationFrame(animate);
-                sphere.rotation.x += 0.001;
-                sphere.rotation.y += 0.002;
-                renderer.render(scene, camera);
-            }
+                
+                torusKnot.rotation.x += 0.001;
+                torusKnot.rotation.y += 0.002
+torusKnot.rotation.z += 0.0005;
 
-            // Scroll handler
-            window.addEventListener('scroll', () => {
-                const scrolled = window.scrollY;
-                sphere.position.y = -(scrolled * 0.05);
-                sphere.rotation.y = scrolled * 0.001;
-
-                // Parallax effect for stars
-                const stars = document.querySelectorAll('.stars');
-                stars.forEach(star => {
-                    const speed = parseFloat(star.style.animationDelay);
-                    star.style.transform = `translateY(${-scrolled * speed * 0.1}px)`;
+                lights.forEach((light, i) => {
+                    const time = Date.now() * 0.001;
+                    light.position.x = Math.cos(time + i * Math.PI * 2 / 3) * 50;
+                    light.position.y = Math.sin(time + i * Math.PI * 2 / 3) * 50;
                 });
 
-                // Fade in cards
+                renderer.render(scene, camera);
+            };
+
+            // Scroll animations
+            const scrollHandler = () => {
+                const scrolled = window.scrollY;
+                torusKnot.position.y = -(scrolled * 0.05);
+                torusKnot.rotation.y = scrolled * 0.001;
+
                 document.querySelectorAll('.card').forEach((card, index) => {
                     const rect = card.getBoundingClientRect();
                     if (rect.top < window.innerHeight - 100) {
-                        card.style.animation = `fadeInUp 1s ease-out forwards ${index * 0.2}s`;
+                        gsap.to(card, {
+                            duration: 0.8,
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            rotateX: 0,
+                            ease: "power2.out",
+                            delay: index * 0.1
+                        });
                     }
                 });
-            });
+            };
 
-            // Mouse move handler for cards
+            window.addEventListener('scroll', scrollHandler);
+
+            // Mouse move parallax effect
             document.addEventListener('mousemove', (e) => {
+                const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+
+                gsap.to(torusKnot.rotation, {
+                    duration: 0.5,
+                    x: mouseY * 0.5,
+                    y: mouseX * 0.5,
+                    ease: "power1.out"
+                });
+
                 document.querySelectorAll('.card').forEach(card => {
                     const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    
-                    card.style.transform = `
-                        perspective(1000px)
-                        rotateX(${y * -0.01}deg)
-                        rotateY(${x * 0.01}deg)
-                        translateZ(10px)
-                    `;
+                    const cardX = (rect.left + rect.width / 2 - e.clientX) / 30;
+                    const cardY = (rect.top + rect.height / 2 - e.clientY) / 30;
+
+                    gsap.to(card, {
+                        duration: 0.5,
+                        rotateX: -cardY,
+                        rotateY: cardX,
+                        ease: "power1.out"
+                    });
                 });
             });
 
+            // Initialize animations
             animate();
 
-            // Window resize handler
+            // Responsive handling
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
-        });
 
-        // Smooth scroll for button
-        document.querySelector('.support-button').addEventListener('click', () => {
-            document.querySelector('.cards-container').scrollIntoView({ behavior: 'smooth' });
+            // Smooth scroll
+            document.querySelector('.support-button').addEventListener('click', () => {
+                gsap.to(window, {
+                    duration: 1,
+                    scrollTo: ".cards-container",
+                    ease: "power2.inOut"
+                });
+            });
+
+            // Add hover effect for better interactivity
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    gsap.to(card, {
+                        duration: 0.3,
+                        scale: 1.02,
+                        y: -10,
+                        ease: "power2.out"
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    gsap.to(card, {
+                        duration: 0.3,
+                        scale: 1,
+                        y: 0,
+                        ease: "power2.out"
+                    });
+                });
+            });
         });
     </script>
 </body>
