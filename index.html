@@ -16,6 +16,7 @@
             --text: #e6d4ff;
             --header: #d8b9ff;
             --glass: rgba(255, 255, 255, 0.1);
+            --neon: #ff00ff;
         }
 
         * {
@@ -30,6 +31,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             color: var(--text);
+            perspective: 1000px;
         }
 
         #canvas-container {
@@ -41,31 +43,65 @@
             z-index: -1;
         }
 
-        .stars {
+        .noise {
             position: fixed;
-            width: 3px;
-            height: 3px;
-            background: white;
-            box-shadow: 0 0 10px white;
-            border-radius: 50%;
-            animation: starAnimation 5s linear infinite;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4o8JoAAAACHRSTlMABQgNERwkKS6kASoAAACySURBVDjLY2CgJmBkgrOEdQ0RLEEIixDEIoQxC0FZrFjUMTKxYFHHxMSCRR0zMwsWdSwsLFjUsbKyYFHHxsaCRR07OzsWdRwcHFjUcXJyYlHHxcWFRR03NzcWdTw8PFjU8fLyYlHHx8eHRR0/Pz8WdQICAljUCQoKYlEnJCSERZ2wMJyVyMjIyMTMwsjAxsLKzMLGxcbNwsXDw8vKy8fHz8rPLyAgwCooyM7OziYkxMYGAL1WKAz3sXimAAAAAElFTkSuQmCC');
+            opacity: 0.03;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        @keyframes starAnimation {
-            from {
-                transform: translateY(0);
-            }
-            to {
-                transform: translateY(-100vh) scale(2);
-            }
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .nav.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text);
+            text-decoration: none;
             position: relative;
-            z-index: 2;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--neon);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before {
+            transform: scaleX(1);
         }
 
         .header {
@@ -74,6 +110,19 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--primary) 0%, transparent 70%);
+            opacity: 0.2;
         }
 
         h1 {
@@ -84,74 +133,125 @@
             letter-spacing: 8px;
             margin-bottom: 2rem;
             text-align: center;
+            position: relative;
             text-shadow: 0 0 20px var(--accent);
-            animation: fadeInUp 1s ease-out;
         }
 
-        .glow {
+        h1::before, h1::after {
+            content: attr(data-text);
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, var(--accent) 0%, transparent 70%);
-            opacity: 0.2;
-            pointer-events: none;
+            left: 0;
+            top: 0;
+            opacity: 0.8;
+            animation: glitch 3s infinite alternate-reverse;
         }
 
-        .cards-container {
+        h1::before {
+            color: #ff00ff;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translate(-2px, 2px);
+        }
+
+        h1::after {
+            color: #00ffff;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translate(2px, -2px);
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        .content-section {
+            padding: 6rem 2rem;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .content-section:nth-child(odd) {
+            background: rgba(75, 0, 130, 0.1);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            font-size: 2.5rem;
+            color: var(--header);
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon), transparent);
+        }
+
+        .content-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 1s ease-out forwards;
-            animation-delay: 0.5s;
+            margin-top: 2rem;
         }
 
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+        .content-item {
+            background: rgba(255, 255, 255, 0.03);
             padding: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .card::before {
+        .content-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(186, 104, 200, 0.2);
+        }
+
+        .content-item::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: 0.5s;
         }
 
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 0 30px rgba(186, 104, 200, 0.3);
-        }
-
-        .card:hover::before {
+        .content-item:hover::before {
             left: 100%;
-        }
-
-        h2 {
-            color: var(--header);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-        }
-
-        p {
-            line-height: 1.8;
-            margin-bottom: 1rem;
         }
 
         .support-button {
@@ -169,6 +269,7 @@
             overflow: hidden;
             text-decoration: none;
             display: inline-block;
+            margin-top: 2rem;
         }
 
         .support-button:hover {
@@ -176,204 +277,148 @@
             box-shadow: 0 10px 20px rgba(147, 112, 219, 0.3);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .support-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .support-button:hover::before {
+            left: 100%;
         }
 
         footer {
+            background: rgba(10, 10, 10, 0.9);
+            padding: 4rem 2rem;
             text-align: center;
-            padding: 2rem;
-            margin-top: 4rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon), transparent);
+        }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon), var(--accent));
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 1001;
         }
 
         @media (max-width: 768px) {
             h1 {
                 font-size: 3rem;
             }
+
+            .nav-links {
+                display: none;
+            }
+
+            .section-header {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="scroll-progress" id="scroll-progress"></div>
     <div id="canvas-container"></div>
     <div class="noise"></div>
-    <div id="stars"></div>
     
-    <main class="container">
-        <section class="header">
-            <h1>Lky Privacy Policy</h1>
-            <button class="support-button">Explore Policy</button>
-        </section>
+    <nav class="nav">
+        <div class="logo">LKY</div>
+        <div class="nav-links">
+            <a href="#introduction" class="nav-link">Introduction</a>
+            <a href="#collection" class="nav-link">Data Collection</a>
+            <a href="#usage" class="nav-link">Data Usage</a>
+            <a href="#rights" class="nav-link">Your Rights</a>
+        </div>
+    </nav>
 
-        <div class="cards-container">
-            <div class="card">
-                <h2>1. Introduction</h2>
+    <header class="header">
+        <h1 data-text="Lky Privacy Policy">Lky Privacy Policy</h1>
+        <a href="#introduction" class="support-button">Explore Policy</a>
+    </header>
+
+    <main>
+        <section id="introduction" class="content-section">
+            <div class="section-container">
+                <h2 class="section-header">Introduction</h2>
                 <p>Thank you for using Lky! Your privacy is important to us. This Privacy Policy explains how we collect, use, and protect your information when you interact with Lky on Discord.</p>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>2. Information We Collect</h2>
-                <p>When you use Lky, we may collect the following information:</p>
-                <p>- User Messages: Lky may store messages sent in the server where the bot is active to perform certain functions.</p>
-                <p>- Discord User ID: Lky collects your Discord user ID to identify you and provide personalized responses.</p>
-                <p>- Server Information: Lky may store basic information about Discord servers for customized features.</p>
+        <section id="collection" class="content-section">
+            <div class="section-container">
+                <h2 class="section-header">Information We Collect</h2>
+                <div class="content-grid">
+                    <div class="content-item">
+                        <h3>User Messages</h3>
+                        <p>Lky may store messages sent in the server where the bot is active to perform certain functions.</p>
+                    </div>
+                    <div class="content-item">
+                        <h3>Discord User ID</h3>
+                        <p>Lky collects your Discord user ID to identify you and provide personalized responses.</p>
+                    </div>
+                    <div class="content-item">
+                        <h3>Server Information</h3>
+                        <p>Lky may store basic information about Discord servers for customized features.</p>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>3. How We Use Your Information</h2>
-                <p>The information we collect is used to:</p>
-                <p>- Provide and improve the functionality of Lky Bot.</p>
-                <p>- Respond to user commands and inquiries.</p>
-                <p>- Track and analyze usage to improve performance.</p>
+        <section id="usage" class="content-section">
+            <div class="section-container">
+                <h2 class="section-header">How We Use Your Information</h2>
+                <div class="content-grid">
+                    <div class="content-item">
+                        <h3>Functionality</h3>
+                        <p>Provide and improve the functionality of Lky Bot.</p>
+                    </div>
+                    <div class="content-item">
+                        <h3>Response</h3>
+                        <p>Respond to user commands and inquiries.</p>
+                    </div>
+                    <div class="content-item">
+                        <h3>Analytics</h3>
+                        <p>Track and analyze usage to improve performance.</p>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>4. Data Retention</h2>
+        <section id="retention" class="content-section">
+            <div class="section-container">
+                <h2 class="section-header">Data Retention</h2>
                 <p>We store the collected information only for as long as necessary to provide our services. We do not store user messages indefinitely. If you no longer want your data stored, you can request us to delete your data by contacting us.</p>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>5. Data Security</h2>
+        <section id="security" class="content-section">
+            <div class="section-container">
+                <h2 class="section-header">Data Security</h2>
                 <p>We take reasonable precautions to protect your information from unauthorized access, alteration, or destruction. However, please note that no data transmission method over the internet is 100% secure, and we cannot guarantee the absolute security of your data.</p>
             </div>
+        </section>
 
-            <div class="card">
-                <h2>6. Sharing Your Information</h2>
-                <p>We do not sell or share your personal information with third parties, except where required by law or when necessary to provide our services. We may share data with trusted third-party services for hosting or technical support, but they are not allowed to use your data for any other purposes.</p>
-            </div>
-
-            <div class="card">
-                <h2>7. Your Rights</h2>
-                <p>You have the right to:</p>
-                <p>- Access your data and request information about how it is used.</p>
-                <p>- Request the deletion of your data.</p>
-                <p>- Contact us with any privacy-related concerns or questions.</p>
-            </div>
-
-            <div class="card">
-                <h2>8. Changes to This Privacy Policy</h2>
-                <p>We may update this Privacy Policy from time to time. Any changes will be posted here with an updated effective date. Please check this page periodically for updates.</p>
-            </div>
-
-            <div class="card">
-                <h2>9. Contact Us</h2>
-                <p>If you have any questions about this Privacy Policy or would like to exercise your rights regarding your data, please join our support Discord server:</p>
-                <a href="https://discord.gg/U485Yncxcc" class="support-button" target="_blank">Join Support Server</a>
-            </div>
-        </div>
-
-        <footer>
-            <p>&copy; 2024 LunarDevs™. All rights reserved.</p>
-        </footer>
-    </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Three.js setup
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            // Create sphere
-            const geometry = new THREE.IcosahedronGeometry(20, 1);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0x9370db,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.3
-            });
-
-            const sphere = new THREE.Mesh(geometry, material);
-            scene.add(sphere);
-
-            // Add lighting
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(0, 0, 1);
-            scene.add(light);
-
-            camera.position.z = 50;
-
-            // Create stars
-            const starsDiv = document.getElementById('stars');
-            for (let i = 0; i < 200; i++) {
-                const star = document.createElement('div');
-                star.className = 'stars';
-                star.style.left = `${Math.random() * 100}vw`;
-                star.style.top = `${Math.random() * 100}vh`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                starsDiv.appendChild(star);
-            }
-
-            // Animation loop
-            function animate() {
-                requestAnimationFrame(animate);
-                sphere.rotation.x += 0.001;
-                sphere.rotation.y += 0.002;
-                renderer.render(scene, camera);
-            }
-
-            // Scroll handler
-            window.addEventListener('scroll', () => {
-                const scrolled = window.scrollY;
-                sphere.position.y = -(scrolled * 0.05);
-                sphere.rotation.y = scrolled * 0.001;
-
-                // Parallax effect for stars
-                const stars = document.querySelectorAll('.stars');
-                stars.forEach(star => {
-                    const speed = parseFloat(star.style.animationDelay);
-                    star.style.transform = `translateY(${-scrolled * speed * 0.1}px)`;
-                });
-
-                // Fade in cards
-                document.querySelectorAll('.card').forEach((card, index) => {
-                    const rect = card.getBoundingClientRect();
-                    if (rect.top < window.innerHeight - 100) {
-                        card.style.animation = `fadeInUp 1s ease-out forwards ${index * 0.2}s`;
-                    }
-                });
-            });
-
-            // Mouse move handler for cards
-            document.addEventListener('mousemove', (e) => {
-                document.querySelectorAll('.card').forEach(card => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    
-                    card.style.transform = `
-                        perspective(1000px)
-                        rotateX(${y * -0.01}deg)
-                        rotateY(${x * 0.01}deg)
-                        translateZ(10px)
-                    `;
-                });
-            });
-
-            animate();
-
-            // Window resize handler
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        });
-
-        // Smooth scroll for button
-        document.querySelector('.support-button').addEventListener('click', () => {
-            document.querySelector('.cards-container').scrollIntoView({ behavior: 'smooth' });
-        });
-    </script>
-</body>
-</html>
+        <section id="sharing" class="content-section">
+            <div class="section-container">
+                <h2 class="section
