@@ -3,244 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberDev Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Sav - Developer Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --neon-blue: #00f3ff;
-            --neon-purple: #bc13fe;
-            --dark-bg: #0a0a0f;
-            --cyber-gradient: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            --dark-bg: #0a0a0a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --minecraft-green: #44bd32;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            color: white;
         }
 
         body {
-            background: var(--dark-bg);
-            color: white;
-            font-family: 'Exo 2', sans-serif;
+            background-color: var(--dark-bg);
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        .cyber-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* Cyber Header */
-        .cyber-header {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .hologram-effect {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: var(--cyber-gradient);
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.1;
-            animation: hologram 8s infinite linear;
-        }
-
-        @keyframes hologram {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
-        }
-
-        .cyber-title {
-            position: relative;
-            text-align: center;
-            z-index: 1;
-        }
-
-        .cyber-title h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            background: var(--cyber-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
-        }
-
-        .cyber-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 243, 255, 0.1);
-            border-radius: 15px;
-            padding: 2rem;
-            position: relative;
-            transition: transform 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .cyber-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .cyber-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 15px;
-            padding: 2px;
-            background: var(--cyber-gradient);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-        }
-
-        .glow-button {
-            background: var(--cyber-gradient);
-            border: none;
-            padding: 1rem 2rem;
-            color: white;
-            border-radius: 50px;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .glow-button:hover {
-            box-shadow: 0 0 30px var(--neon-purple);
-        }
-
-        /* Particle Background */
         #particles-js {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 1;
         }
 
-        /* Cyber Terminal Effect */
-        .terminal-text {
-            border: 1px solid var(--neon-blue);
-            padding: 1rem;
-            font-family: monospace;
+        .content {
             position: relative;
+            z-index: 2;
         }
 
-        .terminal-text::before {
-            content: '> ';
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            flex-direction: column;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .minecraft-logo {
+            width: 150px;
+            height: 150px;
+            background: url('https://cdn.discordapp.com/attachments/1274395202609479753/1335153037420920843/removed-bg-1738395689818.png') center/contain no-repeat;
+            margin: 0 auto 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .company-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: url('https://images-ext-1.discordapp.net/external/gcH7P4borBPbtaFTc4VXlccAkYMrhvhxtgNW71zFHik/https/cdn.discordapp.com/icons/1258323521344639056/63160b4bb621f27446e1ffcfce3b76d9.png') center/cover;
+        }
+
+        .company-text {
+            font-size: 1.2rem;
             color: var(--neon-blue);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .cyber-title h1 {
-                font-size: 2.5rem;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hero-text {
+            font-size: 6rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 1rem;
+        }
+
+        .name-highlight {
+            background: linear-gradient(45deg, var(--neon-blue), var(--minecraft-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 7rem;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--neon-blue),
+                           0 0 20px var(--neon-blue),
+                           0 0 30px var(--neon-blue);
             }
-            
-            .skills-grid {
-                grid-template-columns: 1fr;
+            to {
+                text-shadow: 0 0 20px var(--neon-blue),
+                           0 0 30px var(--neon-blue),
+                           0 0 40px var(--neon-blue);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0.8;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .social-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .skills-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(45deg, #000814, #001233);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .skill-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--neon-blue);
+        }
+
+        .projects-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(45deg, #001233, #000814);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--neon-blue);
+        }
+
+        .contact-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #000814, #001233);
+        }
+
+        .contact-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .contact-btn:hover {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+        }
+
+        @media (max-width: 768px) {
+            .hero-text {
+                font-size: 3rem;
+            }
+            .name-highlight {
+                font-size: 3.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            .minecraft-logo {
+                width: 100px;
+                height: 100px;
             }
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-
-    <header class="cyber-header">
-        <div class="hologram-effect"></div>
-        <div class="cyber-title">
-            <h1>CYBER_DEV</h1>
-            <p class="terminal-text">Full-Stack Automation Engineer</p>
-            <button class="glow-button" style="margin-top: 2rem;">Initiate Contact</button>
-        </div>
-    </header>
-
-    <main class="cyber-container">
-        <section class="skills-grid">
-            <div class="cyber-card">
-                <h2><i class="fas fa-cube"></i> Minecraft Plugins</h2>
-                <p>Custom Java/Bukkit development with optimized performance and unique features</p>
+    <div class="content">
+        <header>
+            <div class="logo-container">
+                <div class="minecraft-logo"></div>
+                <div class="company-info">
+                    <div class="company-logo"></div>
+                    <span class="company-text">Owner Of LunarDevsTM</span>
+                </div>
             </div>
-
-            <div class="cyber-card">
-                <h2><i class="fas fa-globe"></i> Web Development</h2>
-                <p>Full-stack solutions with modern frameworks (React, Node.js, Django) and cloud integration</p>
+            <div>
+                <h1 class="hero-text">I'm <span class="name-highlight">Sav</span></h1>
+                <p class="subtitle">Full-Stack Developer & Bot Creator</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-icon"><img src="https://cdn.discordapp.com/attachments/1274395202609479753/1335153215699816509/2048px-Instagram_logo_2022.png" alt="Instagram"></a>
+                    <a href="#" class="social-icon"><img src="https://cdn.discordapp.com/attachments/1274395202609479753/1335153330099589121/2048px-Telegram_logo.png" alt="Telegram"></a>
+                    <a href="#" class="social-icon"><img src="https://cdn.discordapp.com/attachments/1274395202609479753/1335153425276600320/512px-WhatsApp.png" alt="WhatsApp"></a>
+                    <a href="#" class="social-icon"><i class="fab fa-github"></i></a>
+                </div>
             </div>
+        </header>
 
-            <div class="cyber-card">
-                <h2><i class="fas fa-robot"></i> Bot Development</h2>
-                <p>AI-powered bots for Telegram, Discord, and WhatsApp with NLP integration</p>
+        <section class="skills-section">
+            <h2 class="section-title">My Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-cube"></i></div>
+                    <h3>Minecraft Plugins</h3>
+                    <p>Custom plugin development for Minecraft servers, enhancing gameplay and adding unique features.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-code"></i></div>
+                    <h3>Full-Stack Development</h3>
+                    <p>Creating responsive and dynamic websites with modern frontend and backend technologies.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon"><i class="fas fa-robot"></i></div>
+                    <h3>Bot Development</h3>
+                    <p>Building automated bots for Telegram, WhatsApp, and Discord platforms with advanced features.</p>
+                </div>
             </div>
         </section>
 
-        <section class="cyber-card">
-            <h2>About the Developer</h2>
-            <p>Specializing in digital automation and interactive systems development. Expertise includes:</p>
-            <ul>
-                <li>Multi-platform bot ecosystems</li>
-                <li>Low-latency network programming</li>
-                <li>Blockchain-integrated systems</li>
-                <li>Machine learning implementations</li>
-            </ul>
+        <section class="projects-section">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <h3>Custom Minecraft Economy Plugin</h3>
+                    <p>A comprehensive economy system for Minecraft servers with advanced features and MySQL integration.</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Multi-Platform Chat Bot</h3>
+                    <p>An intelligent bot that works across Discord, Telegram, and WhatsApp with unified functionality.</p>
+                </div>
+                <div class="skill-card">
+                    <h3>E-commerce Platform</h3>
+                    <p>Full-stack web application with user authentication, payment processing, and inventory management.</p>
+                </div>
+            </div>
         </section>
-    </main>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <section class="contact-section">
+            <h2 class="section-title">Let's Work Together</h2>
+            <p>Looking for a developer to bring your ideas to life?</p>
+            <a href="#contact" class="contact-btn">Get In Touch</a>
+        </section>
+    </div>
+
     <script>
         particlesJS('particles-js', {
             particles: {
-                number: { value: 80 },
-                color: { value: '#00f3ff' },
-                shape: { type: 'circle' },
-                opacity: { value: 0.5 },
-                size: { value: 3 },
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#00f3ff'
+                },
+                shape: {
+                    type: 'circle'
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false
+                },
+                size: {
+                    value: 3,
+                    random: true
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#00f3ff',
+                    opacity: 0.4,
+                    width: 1
+                },
                 move: {
                     enable: true,
-                    speed: 2,
+                    speed: 6,
                     direction: 'none',
                     random: false,
                     straight: false,
                     out_mode: 'out',
-                    bounce: false,
+                    bounce: false
                 }
             },
             interactivity: {
                 detect_on: 'canvas',
                 events: {
-                    onhover: { enable: true, mode: 'repulse' },
-                    onclick: { enable: true, mode: 'push' },
+                    onhover: {
+                        enable: true,
+                        mode: 'repulse'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
                     resize: true
                 }
             },
             retina_detect: true
-        });
-
-        // Add hover effect to cards
-        document.querySelectorAll('.cyber-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--x', `${x}px`);
-                card.style.setProperty('--y', `${y}px`);
-            });
         });
     </script>
 </body>
