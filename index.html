@@ -72,6 +72,7 @@
             align-items: center;
             gap: 1rem;
             margin-top: 1rem;
+            cursor: pointer; /* Add cursor pointer to indicate clickable */
         }
 
         .company-logo {
@@ -276,6 +277,7 @@
             font-weight: bold;
             transition: all 0.3s ease;
             margin-top: 2rem;
+            cursor: pointer; /* Add cursor pointer to indicate clickable */
         }
 
         .contact-btn:hover {
@@ -306,7 +308,7 @@
         <header>
             <div class="logo-container">
                 <div class="minecraft-logo"></div>
-                <div class="company-info">
+                <div class="company-info" onclick="window.location.href='https://discord.gg/U485Yncxcc';">
                     <div class="company-logo"></div>
                     <span class="company-text">Owner Of LunarDevsTM</span>
                 </div>
@@ -371,7 +373,7 @@
         <section class="contact-section">
             <h2 class="section-title">Let's Work Together</h2>
             <p>Looking for a developer to bring your ideas to life?</p>
-            <a href="#contact" class="contact-btn">Get In Touch</a>
+            <a href="https://discord.gg/U485Yncxcc" class="contact-btn">Get In Touch</a>
         </section>
     </div>
 
