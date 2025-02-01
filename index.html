@@ -3,40 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LKY Privacy Policy</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/ScrollTrigger.min.js"></script>
+    <title>CyberDev Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Base Reset */
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #0a0a0f;
+            --cyber-gradient: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: %23ff00ff;transform: rotate(45deg);"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg>'), auto;
         }
 
         body {
-            background: #000;
-            color: #fff;
-            font-family: 'Chakra Petch', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            font-family: 'Exo 2', sans-serif;
             overflow-x: hidden;
         }
 
-        /* Matrix Background */
-        .matrix-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            opacity: 0.1;
+        .cyber-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        /* Holographic Header */
-        .hologram-header {
+        /* Cyber Header */
+        .cyber-header {
             position: relative;
             height: 100vh;
             display: flex;
@@ -45,317 +43,205 @@
             overflow: hidden;
         }
 
-        .hologram-text {
-            font-size: 8rem;
-            font-weight: 700;
-            text-transform: uppercase;
+        .hologram-effect {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: var(--cyber-gradient);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            animation: hologram 8s infinite linear;
+        }
+
+        @keyframes hologram {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .cyber-title {
             position: relative;
-            background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+            text-align: center;
+            z-index: 1;
+        }
+
+        .cyber-title h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            background: var(--cyber-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: hologramFloat 6s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
         }
 
-        @keyframes hologramFloat {
-            0%, 100% { transform: translateY(0) rotateZ(-2deg); }
-            50% { transform: translateY(-20px) rotateZ(2deg); }
-        }
-
-        /* Particle Network */
-        .particle-network {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        /* Data Nodes */
-        .node-container {
+        /* Skills Grid */
+        .skills-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5rem;
-            padding: 10rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
         }
 
-        .data-node {
-            position: relative;
-            padding: 2rem;
-            border: 2px solid rgba(255, 0, 255, 0.3);
+        .cyber-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 243, 255, 0.1);
             border-radius: 15px;
-            transition: all 0.5s ease;
-            background: rgba(0, 0, 0, 0.7);
-            transform-style: preserve-3d;
-        }
-
-        .data-node:hover {
-            transform: translateY(-20px) rotateX(10deg) rotateY(10deg);
-            box-shadow: 0 0 50px rgba(255, 0, 255, 0.5);
-        }
-
-        .data-node::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #ff00ff, #00ffff, transparent);
-            z-index: -1;
-            animation: nodeGlow 3s linear infinite;
-        }
-
-        @keyframes nodeGlow {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-
-        /* Quantum Scroller */
-        .quantum-scroll {
-            position: fixed;
-            right: 2rem;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .quantum-dot {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: #00ffff;
-            box-shadow: 0 0 15px #00ffff;
-            transition: all 0.3s ease;
-            opacity: 0.3;
-        }
-
-        .quantum-dot.active {
-            opacity: 1;
-            transform: scale(1.5);
-        }
-
-        /* Neural Connection Lines */
-        .neural-lines {
-            position: fixed;
-            width: 100vw;
-            height: 100vh;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        /* Holographic Card */
-        .holo-card {
-            position: relative;
             padding: 2rem;
-            margin: 5rem;
-            border: 1px solid rgba(255, 0, 255, 0.5);
-            transform-style: preserve-3d;
-            background: rgba(0, 0, 0, 0.8);
-            transition: all 0.5s ease;
+            position: relative;
+            transition: transform 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
-        .holo-card:hover {
-            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) translateZ(50px);
+        .cyber-card:hover {
+            transform: translateY(-10px);
         }
 
-        .holo-card::after {
+        .cyber-card::before {
             content: '';
             position: absolute;
+            inset: 0;
+            border-radius: 15px;
+            padding: 2px;
+            background: var(--cyber-gradient);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .glow-button {
+            background: var(--cyber-gradient);
+            border: none;
+            padding: 1rem 2rem;
+            color: white;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .glow-button:hover {
+            box-shadow: 0 0 30px var(--neon-purple);
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, #ff00ff22, transparent);
-            animation: holoScan 4s linear infinite;
+            z-index: -1;
         }
 
-        @keyframes holoScan {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
+        /* Cyber Terminal Effect */
+        .terminal-text {
+            border: 1px solid var(--neon-blue);
+            padding: 1rem;
+            font-family: monospace;
+            position: relative;
         }
 
-        /* Particle Explosion */
-        .particle {
-            position: absolute;
-            pointer-events: none;
-            background: #ff00ff;
-            border-radius: 50%;
-            animation: particlePop 1s ease-out forwards;
-        }
-
-        @keyframes particlePop {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
+        .terminal-text::before {
+            content: '> ';
+            color: var(--neon-blue);
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hologram-text { font-size: 4rem; }
-            .node-container { grid-template-columns: 1fr; }
+            .cyber-title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="matrix-container" id="matrix"></div>
-    <div class="neural-lines" id="neuralLines"></div>
+    <div id="particles-js"></div>
 
-    <nav class="quantum-scroll" id="quantumNav">
-        <div class="quantum-dot" data-section="0"></div>
-        <div class="quantum-dot" data-section="1"></div>
-        <div class="quantum-dot" data-section="2"></div>
-        <div class="quantum-dot" data-section="3"></div>
-    </nav>
-
-    <header class="hologram-header">
-        <h1 class="hologram-text">Privacy Nexus</h1>
-        <canvas class="particle-network" id="particleNetwork"></canvas>
+    <header class="cyber-header">
+        <div class="hologram-effect"></div>
+        <div class="cyber-title">
+            <h1>CYBER_DEV</h1>
+            <p class="terminal-text">Full-Stack Automation Engineer</p>
+            <button class="glow-button" style="margin-top: 2rem;">Initiate Contact</button>
+        </div>
     </header>
 
-    <section class="node-container">
-        <div class="data-node">
-            <h3>Data Encryption</h3>
-            <p>Quantum-level security protocols</p>
-            <div class="particle-explosion"></div>
-        </div>
-        <div class="data-node">
-            <h3>User Control</h3>
-            <p>Dynamic privacy customization</p>
-        </div>
-        <div class="data-node">
-            <h3>Transparency</h3>
-            <p>Clear data visualization</p>
-        </div>
-    </section>
+    <main class="cyber-container">
+        <section class="skills-grid">
+            <div class="cyber-card">
+                <h2><i class="fas fa-cube"></i> Minecraft Plugins</h2>
+                <p>Custom Java/Bukkit development with optimized performance and unique features</p>
+            </div>
 
-    <section class="holo-card">
-        <h2>Neural Privacy Network</h2>
-        <p>Decentralized data protection matrix</p>
-    </section>
+            <div class="cyber-card">
+                <h2><i class="fas fa-globe"></i> Web Development</h2>
+                <p>Full-stack solutions with modern frameworks (React, Node.js, Django) and cloud integration</p>
+            </div>
 
+            <div class="cyber-card">
+                <h2><i class="fas fa-robot"></i> Bot Development</h2>
+                <p>AI-powered bots for Telegram, Discord, and WhatsApp with NLP integration</p>
+            </div>
+        </section>
+
+        <section class="cyber-card">
+            <h2>About the Developer</h2>
+            <p>Specializing in digital automation and interactive systems development. Expertise includes:</p>
+            <ul>
+                <li>Multi-platform bot ecosystems</li>
+                <li>Low-latency network programming</li>
+                <li>Blockchain-integrated systems</li>
+                <li>Machine learning implementations</li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // Three.js Particle Network
-        const particleCanvas = document.getElementById('particleNetwork');
-        const renderer = new THREE.WebGLRenderer({ canvas: particleCanvas, alpha: true });
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        
-        // Create particle system
-        const geometry = new THREE.BufferGeometry();
-        const vertices = [];
-        for (let i = 0; i < 5000; i++) {
-            vertices.push(
-                Math.random() * 2000 - 1000,
-                Math.random() * 2000 - 1000,
-                Math.random() * 2000 - 1000
-            );
-        }
-        geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-        const material = new THREE.PointsMaterial({ size: 2, color: 0x00ffff });
-        const particles = new THREE.Points(geometry, material);
-        scene.add(particles);
-
-        camera.position.z = 1000;
-
-        function animateParticles() {
-            requestAnimationFrame(animateParticles);
-            particles.rotation.x += 0.0001;
-            particles.rotation.y += 0.0001;
-            renderer.render(scene, camera);
-        }
-        animateParticles();
-
-        // GSAP Animations
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.from(".data-node", {
-            scrollTrigger: ".node-container",
-            duration: 1,
-            opacity: 0,
-            y: 100,
-            stagger: 0.2,
-            ease: "power4.out"
-        });
-
-        // Particle Explosion Interaction
-        document.querySelectorAll('.data-node').forEach(node => {
-            node.addEventListener('click', (e) => {
-                const particles = [];
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = e.clientX + 'px';
-                    particle.style.top = e.clientY + 'px';
-                    document.body.appendChild(particle);
-                    particles.push(particle);
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80 },
+                color: { value: '#00f3ff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5 },
+                size: { value: 3 },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
                 }
-
-                particles.forEach((p, i) => {
-                    gsap.to(p, {
-                        x: (Math.random() - 0.5) * 500,
-                        y: (Math.random() - 0.5) * 500,
-                        duration: 1,
-                        onComplete: () => p.remove()
-                    });
-                });
-            });
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                }
+            },
+            retina_detect: true
         });
 
-        // Neural Connection Lines
-        const neuralCanvas = document.createElement('canvas');
-        neuralCanvas.className = 'neural-lines';
-        document.body.appendChild(neuralCanvas);
-        const ctx = neuralCanvas.getContext('2d');
-
-        function resizeCanvas() {
-            neuralCanvas.width = window.innerWidth;
-            neuralCanvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        class Neuron {
-            constructor() {
-                this.x = Math.random() * neuralCanvas.width;
-                this.y = Math.random() * neuralCanvas.height;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
-            }
-        }
-
-        const neurons = Array.from({ length: 50 }, () => new Neuron());
-
-        function animateNeurons() {
-            ctx.clearRect(0, 0, neuralCanvas.width, neuralCanvas.height);
-            
-            neurons.forEach(neuron => {
-                neuron.x += neuron.vx;
-                neuron.y += neuron.vy;
-                
-                if (neuron.x < 0 || neuron.x > neuralCanvas.width) neuron.vx *= -1;
-                if (neuron.y < 0 || neuron.y > neuralCanvas.height) neuron.vy *= -1;
-                
-                neurons.forEach(other => {
-                    const dx = neuron.x - other.x;
-                    const dy = neuron.y - other.y;
-                    const dist = Math.sqrt(dx*dx + dy*dy);
-                    
-                    if (dist < 150) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 255, 255, ${1 - dist/150})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(neuron.x, neuron.y);
-                        ctx.lineTo(other.x, other.y);
-                        ctx.stroke();
-                    }
-                });
+        // Add hover effect to cards
+        document.querySelectorAll('.cyber-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
             });
-            
-            requestAnimationFrame(animateNeurons);
-        }
-        animateNeurons();
+        });
     </script>
 </body>
 </html>
