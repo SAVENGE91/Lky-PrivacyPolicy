@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sav</title>
+    <title>Sav - Developer Portfolio</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -298,6 +298,31 @@
             color: var(--dark-bg);
         }
 
+        .buddy-section {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(45deg, #001233, #000814);
+        }
+
+        .buddy-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--minecraft-green);
+            color: var(--minecraft-green);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            cursor: pointer;
+        }
+
+        .buddy-btn:hover {
+            background: var(--minecraft-green);
+            color: var(--dark-bg);
+        }
+
         @media (max-width: 768px) {
             .hero-text {
                 font-size: 3rem;
@@ -332,7 +357,7 @@
                 <div class="minecraft-logo"></div>
                 <div class="company-info" onclick="window.location.href='https://discord.gg/U485Yncxcc';">
                     <div class="company-logo"></div>
-                    <span class="company-text">Owner Of LunarDevs™</span>
+                    <span class="company-text">Owner Of LunarDevsTM</span>
                 </div>
             </div>
             <div>
@@ -396,6 +421,12 @@
             <h2 class="section-title">Let's Work Together</h2>
             <p>Looking for a developer to bring your ideas to life? Let's collaborate and create something extraordinary.</p>
             <a href="https://discord.gg/U485Yncxcc" class="contact-btn">Get In Touch</a>
+        </section>
+
+        <section class="buddy-section">
+            <h2 class="section-title">Co-Owner Of LunarDevs</h2>
+            <p>Check out my buddy Jmn's portfolio</p>
+            <a href="https://jmndev.vercel.app/#" class="buddy-btn">Visit Jmn's Portfolio</a>
         </section>
     </div>
 
