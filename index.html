@@ -2,225 +2,393 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EclipseDevs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>In Piracy We Believe | EclipseDevs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    :root {
-      --cyber-purple: #a66bff;
-      --bg-dark: #0d0d0d;
-      --text-light: #f5f5f5;
-    }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
-    body, html {
-      height: 100%;
-      font-family: 'Orbitron', sans-serif;
-      background: var(--bg-dark);
-      overflow: hidden;
-      color: var(--text-light);
+    
+    :root {
+      --neon-green: #00ffae;
+      --neon-blue: #00a2ff;
+      --dark-bg: #0a0a0a;
+      --text-color: #f5f5f5;
+      --moon-color: #6a0dad; /* Purple color for the moon */
     }
-
-    .intro {
-      position: absolute;
+    
+    body {
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+      font-family: 'Roboto Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      background: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      animation: fadeOut 1s ease forwards;
-      animation-delay: 5s;
+      z-index: -1;
+    }
+    
+    .moon-animation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: moonFadeIn 2s forwards;
       z-index: 10;
     }
-
-    .moon {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--cyber-purple), #5e2c8c);
-      box-shadow: 0 0 60px var(--cyber-purple);
-      position: relative;
-      animation: moonCrescent 3s ease forwards;
-      animation-delay: 1s;
+    
+    @keyframes moonFadeIn {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -60%) scale(0);
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(0.5);
+      }
     }
-
-    .moon::after {
-      content: '';
+    
+    .glitch-container {
+      position: relative;
+      opacity: 0; /* Initially hidden */
+      animation: fadeIn 1s ease forwards 2s; /* Delay for moon animation */
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .glitch {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 3.5em;
+      text-transform: uppercase;
+      position: relative;
+      text-shadow: 0 0 10px var(--neon-green);
+      animation: glitch 2s infinite;
+    }
+    
+    .glitch::before, .glitch::after {
+      content: "In Piracy We Believe";
       position: absolute;
       top: 0;
       left: 0;
-      width: 120px;
-      height: 120px;
-      background: var(--bg-dark);
-      border-radius: 50%;
-      transform: translateX(0);
-      animation: eclipseCover 3s ease forwards;
-      animation-delay: 1s;
-    }
-
-    @keyframes eclipseCover {
-      to {
-        transform: translateX(45px);
-      }
-    }
-
-    @keyframes moonCrescent {
-      0% {
-        transform: scale(1);
-      }
-      100% {
-        transform: scale(1) rotate(0.01deg);
-      }
-    }
-
-    .intro h1 {
-      margin-top: 1.5rem;
-      font-size: 2rem;
-      opacity: 0;
-      animation: fadeInText 2s ease forwards;
-      animation-delay: 3.5s;
-      color: var(--cyber-purple);
-      letter-spacing: 3px;
-    }
-
-    @keyframes fadeInText {
-      to {
-        opacity: 1;
-      }
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        visibility: hidden;
-      }
-    }
-
-    .main-content {
-      position: absolute;
-      top: 100%;
       width: 100%;
       height: 100%;
-      background: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: top 1s ease;
     }
-
-    .main-content.show {
-      top: 0;
+    
+    .glitch::before {
+      color: var(--neon-blue);
+      animation: glitch-layer 3s infinite;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+      transform: translate(-2px, 2px);
     }
-
-    .logo {
-      font-size: 2.5rem;
-      color: var(--cyber-purple);
-      margin-bottom: 1rem;
+    
+    .glitch::after {
+      color: var(--neon-green);
+      animation: glitch-layer 2s infinite reverse;
+      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+      transform: translate(2px, -2px);
     }
-
-    .desc {
+    
+    @keyframes glitch {
+      0%, 100% { text-shadow: 0 0 10px var(--neon-green); }
+      20% { text-shadow: -3px 0 var(--neon-blue), 3px 0 var(--neon-green); }
+      40% { text-shadow: 3px 0 var(--neon-blue), -3px 0 var(--neon-green); }
+      60% { text-shadow: 0 0 15px var(--neon-green); }
+    }
+    
+    @keyframes glitch-layer {
+      0%, 100% { opacity: 0.5; transform: translate(-2px, 2px); }
+      50% { opacity : 0.7; transform: translate(2px, -2px); }
+    }
+    
+    .matrix-text {
+      font-size: 1.3em;
+      max-width: 800px;
       text-align: center;
-      font-size: 1rem;
-      max-width: 300px;
-      margin-bottom: 2rem;
-      color: #aaa;
-    }
-
-    .download-btn {
-      padding: 0.75rem 1.5rem;
-      font-size: 1.1rem;
-      color: var(--text-light);
-      background: transparent;
-      border: 2px solid var(--cyber-purple);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
+      margin: 40px 0;
+      line-height: 1.6;
       position: relative;
+      animation: fadeIn 2s ease forwards;
     }
-
+    
+    .download-container {
+      margin-top: 2rem;
+      perspective: 1000px;
+      animation: fadeIn 2.5s ease forwards;
+    }
+    
+    .download-btn {
+      background: transparent;
+      color: var(--neon-green);
+      border: 2px solid var(--neon-green);
+      padding: 15px 40px;
+      font-size: 1.2em;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 2px;
+      border-radius: 4px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(0, 255, 174, 0.4);
+      transform-style: preserve-3d;
+      transform: rotateX(10deg);
+    }
+    
     .download-btn:hover {
-      background: var(--cyber-purple);
-      color: var(--bg-dark);
+      box-shadow: 0 0 25px rgba(0, 255, 174, 0.7);
+      transform: rotateX(0deg);
     }
-
-    .shake {
-      animation: shake 0.5s;
+    
+    .countdown {
+      margin-top: 1.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.2rem;
+      color: var(--neon-blue);
+      letter-spacing: 3px;
+      animation: fadeIn 3s ease forwards;
     }
-
-    @keyframes shake {
-      0% { transform: translateX(0px); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-5px); }
-      100% { transform: translateX(0px); }
+    
+    .social-icons {
+      margin-top: 3rem;
+      display: flex;
+      gap: 2rem;
+      animation: fadeIn 3.5s ease forwards;
     }
-
-    .not-released {
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: #ff4e4e;
-      opacity: 0;
-      transition: opacity 0.4s;
+    
+    footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 0.9em;
+      opacity: 0.7;
+      letter-spacing: 1px;
+      animation: fadeIn 4s ease forwards;
     }
-
-    .not-released.show {
-      opacity: 1;
+    
+    .footer-logo {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-green);
+      font-weight: bold;
+      letter-spacing: 2px;
     }
-
-    @media (max-width: 600px) {
-      .logo {
-        font-size: 2rem;
+    
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .glitch {
+        font-size: 2.5em;
       }
-
-      .desc {
-        font-size: 0.9rem;
-      }
-
-      .download-btn {
-        font-size: 1rem;
-        padding: 0.6rem 1.2rem;
+      
+      .matrix-text {
+        font-size: 1.1em;
       }
     }
   </style>
 </head>
 <body>
-  <div class="intro">
-    <div class="moon"></div>
-    <h1>EclipseDevs</h1>
+  <div id="canvas-container"></div>
+  
+  <div class="moon-animation">
+    <svg width="100" height="100" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" fill="var(--moon-color)" />
+      <circle cx="70" cy="30" r="40" fill="var(--dark-bg)" />
+    </svg>
+    <div class="moon-text">EclipseDevs</div>
   </div>
-
-  <div class="main-content" id="mainContent">
-    <div class="logo">🌌 Eclipse Project</div>
-    <p class="desc">Welcome to the dark side. Something epic is brewing in the shadows. Stay tuned.</p>
-    <button class="download-btn" id="downloadBtn">Download</button>
-    <div class="not-released" id="notReleasedMsg">🚫 Not Released Yet!</div>
+  
+  <div class="content-wrapper">
+    <div class="glitch-container">
+      <h1 class="glitch">In Piracy We Believe</h1>
+    </div>
+    
+    <p class="matrix-text">
+      We're building a revolutionary platform that challenges the norms—a cutting-edge application for PC and mobile
+      that provides access to premium games for those excluded by economic barriers. This is about digital equality,
+      about fairness in the gaming ecosystem, and about the fundamental freedom to play without limitations.
+    </p>
+    
+    <div class="features">
+      <div class="feature-card" style="--delay: 1">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">LIGHTNING FAST</h3>
+        <p class="feature-desc">Experience ultra-fast download speeds with our optimized P2P network architecture and distributed server system.</p>
+      </div>
+      
+      <div class="feature-card" style="--delay: 2">
+        <div class="feature-icon">🛡️</div>
+        <h3 class="feature-title">SECURE ACCESS</h3>
+        <p class="feature-desc">Advanced encryption and anonymity tools built-in to ensure your digital freedom remains private and protected.</p>
+      </div>
+      
+      <div class="feature-card" style="--delay: 3">
+        <div class="feature-icon">🎮</div>
+        <h3 class="feature-title">EXTENSIVE LIBRARY</h3>
+        <p class="feature-desc">Access thousands of titles across multiple platforms, from latest AAA releases to indie classics and retro favorites.</p>
+      </div>
+    </div>
+    
+    <div class="download-container">
+      <button class="download-btn">Download Now</button>
+    </div>
+    
+    <div class="countdown">
+      LAUNCHING IN: <span id="countdown-timer">??:??:??</span>
+    </div>
+    
+    <div class="social-icons">
+      <div class="social-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/>
+        </svg>
+      </div>
+      
+      <div class="social-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+          <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1  37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+        </svg>
+      </div>
+    </div>
+    
+    <footer>
+      <div class="footer-logo">ECLIPSEDEVS</div>
+      <div>&copy; 2025 | Breaking Digital Barriers | All Rights Reserved</div>
+    </footer>
   </div>
 
   <script>
-    // Reveal main content after intro
-    setTimeout(() => {
-      document.getElementById('mainContent').classList.add('show');
-    }, 5200);
-
-    const btn = document.getElementById("downloadBtn");
-    const msg = document.getElementById("notReleasedMsg");
-
-    btn.addEventListener("click", () => {
-      btn.classList.add("shake");
-      msg.classList.add("show");
-
-      setTimeout(() => {
-        btn.classList.remove("shake");
-        msg.classList.remove("show");
-      }, 1500);
+    // Three.js particle background
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+    
+    // Create particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particleCount = 1500;
+    
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      // Position
+      positions[i] = (Math.random() - 0.5) * 2000;
+      positions[i + 1] = (Math.random() - 0.5) * 1000;
+      positions[i + 2] = (Math.random() - 0.8) * 1000;
+      
+      // Color - mix of blue and green
+      const mixFactor = Math.random();
+      colors[i] = 0; // R
+      colors[i + 1] = mixFactor * 1.0; // G
+      colors[i + 2] = (1 - mixFactor) * 0.8; // B
+    }
+    
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 2,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.6
     });
+    
+    const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particleSystem);
+    
+    camera.position.z = 300;
+    
+    // Animation loop
+    const animate = () => {
+      requestAnimationFrame(animate);
+      
+      particleSystem.rotation.y += 0.0005;
+      particleSystem.rotation.x += 0.0002;
+      
+      renderer.render(scene, camera);
+    };
+    
+    animate();
+    
+    // Window resize handler
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    
+    // Make the question marks blink
+    const countdownEl = document.getElementById('countdown-timer');
+    
+    // Add random floating code elements
+    const createFloatingCode = () => {
+      const element = document.createElement('div');
+      element.classList.add('floating-code');
+      
+      // Generate binary string
+      let binary = '';
+      for (let i = 0; i < Math.floor(Math.random() * 24) + 8; i++) {
+        binary += Math.round(Math.random()).toString();
+        if (i % 8 === 7) binary += ' ';
+      }
+      
+      element.textContent = binary;
+      
+      // Random position
+      element.style.top = `${Math.random() * 100}%`;
+      element.style.left = `${Math.random() * 100}%`;
+      element.style.opacity = `${Math.random() * 0.2 + 0.1}`;
+      element.style.fontSize = `${Math.random() * 0.5 + 0.7}rem`;
+      
+      document.body.appendChild(element);
+      
+      // Remove after animation
+      setTimeout(() => {
+        element.style.opacity = '0';
+        setTimeout(() => {
+          element.remove();
+        }, 2000);
+      }, Math.random() * 10000 + 5000);
+    };
+    
+    // Add floating code periodically
+    setInterval(createFloatingCode, 3000);
+    
+    // Add initial floating code elements
+    for (let i = 0; i < 5; i++) {
+      createFloatingCode();
+    }
+    
+    // Show content after moon animation
+    setTimeout(() => {
+      document.querySelector('.glitch-container').style.opacity = '1';
+      document.querySelector('.matrix-text').style.opacity = '1';
+      document.querySelector('.download-container').style.opacity = '1';
+      document.querySelector('.social-icons').style.opacity = '1';
+      document.querySelector('footer').style.opacity = '1';
+      document.querySelector('.moon-animation').style.display = 'none'; // Hide moon animation
+    }, 4000); // Duration of the moon animation
   </script>
 </body>
 </html>
