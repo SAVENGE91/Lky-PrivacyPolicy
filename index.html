@@ -2,235 +2,224 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>In Piracy We Believe | EclipseDevs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EclipseDevs</title>
   <style>
+    :root {
+      --cyber-purple: #a66bff;
+      --bg-dark: #0d0d0d;
+      --text-light: #f5f5f5;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
-    :root {
-      --neon-green: #00ffae;
-      --neon-blue: #00a2ff;
-      --dark-bg: #0a0a0a;
-      --text-color: #f5f5f5;
-      --moon-color: #6a0dad; /* Purple color for the moon */
+
+    body, html {
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      background: var(--bg-dark);
+      overflow: hidden;
+      color: var(--text-light);
     }
-    
-    body {
-      background-color: var(--dark-bg);
-      color: var(--text-color);
-      font-family: 'Roboto Mono', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
-    
-    .moon-animation {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation: moonFadeIn 2s forwards;
-      z-index: 10;
-    }
-    
-    @keyframes moonFadeIn {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -60%) scale(0);
-      }
-      50% {
-        transform: translate(-50%, -50%) scale(1);
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(0.5);
-      }
-    }
-    
-    .content-wrapper {
+
+    .intro {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-dark);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-      z-index: 1;
+      animation: fadeOut 1s ease forwards;
+      animation-delay: 5s;
+      z-index: 10;
+    }
+
+    .moon {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--cyber-purple), #5e2c8c);
+      box-shadow: 0 0 60px var(--cyber-purple);
       position: relative;
-      opacity: 0;
-      animation: fadeIn 1s ease forwards 2s; /* Delay for moon animation */
+      animation: moonCrescent 3s ease forwards;
+      animation-delay: 1s;
     }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    .glitch {
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      font-size: 3.5em;
-      text-transform: uppercase;
-      position: relative;
-      text-shadow: 0 0 10px var(--neon-green);
-      animation: glitch 2s infinite;
-    }
-    
-    .glitch::before, .glitch::after {
-      content: "In Piracy We Believe";
+
+    .moon::after {
+      content: '';
       position: absolute;
       top: 0;
       left: 0;
+      width: 120px;
+      height: 120px;
+      background: var(--bg-dark);
+      border-radius: 50%;
+      transform: translateX(0);
+      animation: eclipseCover 3s ease forwards;
+      animation-delay: 1s;
+    }
+
+    @keyframes eclipseCover {
+      to {
+        transform: translateX(45px);
+      }
+    }
+
+    @keyframes moonCrescent {
+      0% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1) rotate(0.01deg);
+      }
+    }
+
+    .intro h1 {
+      margin-top: 1.5rem;
+      font-size: 2rem;
+      opacity: 0;
+      animation: fadeInText 2s ease forwards;
+      animation-delay: 3.5s;
+      color: var(--cyber-purple);
+      letter-spacing: 3px;
+    }
+
+    @keyframes fadeInText {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    .main-content {
+      position: absolute;
+      top: 100%;
       width: 100%;
       height: 100%;
+      background: var(--bg-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: top 1s ease;
     }
-    
-    .glitch::before {
-      color: var(--neon-blue);
-      animation: glitch-layer 3s infinite;
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-      transform: translate(-2px, 2px);
+
+    .main-content.show {
+      top: 0;
     }
-    
-    .glitch::after {
-      color: var(--neon-green);
-      animation: glitch-layer 2s infinite reverse;
-      clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
-      transform: translate(2px, -2px);
+
+    .logo {
+      font-size: 2.5rem;
+      color: var(--cyber-purple);
+      margin-bottom: 1rem;
     }
-    
-    @keyframes glitch {
-      0%, 100% { text-shadow: 0 0 10px var(--neon-green); }
-      20% { text-shadow: -3px 0 var(--neon-blue), 3px 0 var(--neon-green); }
-      40% { text-shadow: 3px 0 var(--neon-blue), -3px 0 var(--neon-green); }
-      60% { text-shadow: 0 0 15px var(--neon-green); }
-    }
-    
-    @keyframes glitch-layer {
-      0%, 100% { opacity: 0.5; transform: translate(-2px, 2px); }
-      50% { opacity: 0.7; transform: translate(2px, -2px); }
-    }
-    
-    .matrix-text {
-      font -size: 1.2em;
-      margin: 20px 0;
+
+    .desc {
       text-align: center;
-      line-height: 1.5;
+      font-size: 1rem;
+      max-width: 300px;
+      margin-bottom: 2rem;
+      color: #aaa;
     }
-    
-    .download-container {
-      margin-top: 20px;
-    }
-    
+
     .download-btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1.1rem;
+      color: var(--text-light);
       background: transparent;
-      color: var(--neon-green);
-      border: 2px solid var(--neon-green);
-      padding: 15px 40px;
-      font-size: 1.2em;
-      font-family: 'Orbitron', sans-serif;
-      letter-spacing: 2px;
-      border-radius: 4px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s ease;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(0, 255, 174, 0.4);
-    }
-    
-    .shake {
-      animation: shake 0.5s forwards;
-    }
-    
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-10px); }
-      50% { transform: translateX(10px); }
-      75% { transform: translateX(-10px); }
-      100% { transform: translateX(0); }
-    }
-    
-    .message {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: var(--neon-green);
-      padding: 20px;
+      border: 2px solid var(--cyber-purple);
       border-radius: 8px;
-      font-size: 1.5em;
-      z-index: 20;
-      animation: fadeIn 0.5s forwards;
+      cursor: pointer;
+      transition: 0.3s;
+      position: relative;
     }
-    
-    /* Media Queries */
-    @media (max-width: 768px) {
-      .glitch {
-        font-size: 2.5em;
+
+    .download-btn:hover {
+      background: var(--cyber-purple);
+      color: var(--bg-dark);
+    }
+
+    .shake {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0px); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0px); }
+    }
+
+    .not-released {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #ff4e4e;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .not-released.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .logo {
+        font-size: 2rem;
       }
-      
-      .content-wrapper {
-        padding: 1rem;
+
+      .desc {
+        font-size: 0.9rem;
       }
-      
+
       .download-btn {
-        padding: 10px 20px;
-        font-size: 1em;
-      }
-      
-      .matrix-text {
-        font-size: 1em;
+        font-size: 1rem;
+        padding: 0.6rem 1.2rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="moon-animation">
-    <svg width="100" height="100" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="40" fill="var(--moon-color)" />
-      <circle cx="70" cy="30" r="40" fill="var(--dark-bg)" />
-    </svg>
-    <div class="moon-text">EclipseDevs</div>
+  <div class="intro">
+    <div class="moon"></div>
+    <h1>EclipseDevs</h1>
   </div>
-  
-  <div class="content-wrapper">
-    <div class="glitch-container">
-      <h1 class="glitch">In Piracy We Believe</h1>
-    </div>
-    
-    <p class="matrix-text">
-      We're building a revolutionary platform that challenges the norms—a cutting-edge application for PC and mobile
-      that provides access to premium games for those excluded by economic barriers. This is about digital equality,
-      about fairness in the gaming ecosystem, and about the fundamental freedom to play without limitations.
-    </p>
-    
-    <div class="download-container">
-      <button class="download-btn" id="download-btn">Download Now</button>
-    </div>
-    
-    <div class="message" id="message">Not Released Yet!</div>
+
+  <div class="main-content" id="mainContent">
+    <div class="logo">🌌 Eclipse Project</div>
+    <p class="desc">Welcome to the dark side. Something epic is brewing in the shadows. Stay tuned.</p>
+    <button class="download-btn" id="downloadBtn">Download</button>
+    <div class="not-released" id="notReleasedMsg">🚫 Not Released Yet!</div>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const downloadBtn = document.getElementById('download-btn');
-      const message = document.getElementById('message');
+    // Reveal main content after intro
+    setTimeout(() => {
+      document.getElementById('mainContent').classList.add('show');
+    }, 5200);
 
-      downloadBtn.addEventListener('click', () => {
-        document.body.classList.add('shake');
-        message.style.display = 'block';
-        setTimeout(() => {
-          message.style.display = 'none';
-          document.body.classList.remove('shake');
-        }, 2000);
-      });
+    const btn = document.getElementById("downloadBtn");
+    const msg = document.getElementById("notReleasedMsg");
+
+    btn.addEventListener("click", () => {
+      btn.classList.add("shake");
+      msg.classList.add("show");
+
+      setTimeout(() => {
+        btn.classList.remove("shake");
+        msg.classList.remove("show");
+      }, 1500);
     });
   </script>
 </body>
