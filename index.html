@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
   <style>
     * {
       margin: 0;
@@ -17,6 +18,7 @@
     :root {
       --neon-green: #00ffae;
       --neon-blue: #00a2ff;
+      --neon-purple: #9d00ff;
       --dark-bg: #0a0a0a;
       --text-color: #f5f5f5;
     }
@@ -28,6 +30,156 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+    }
+    
+    /* Intro Animation */
+    #intro-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    .moon-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .full-moon {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle at 50% 50%, #9d00ff 10%, #6a00b0 60%, #4a0080 100%);
+      border-radius: 50%;
+      position: absolute;
+      filter: blur(4px) drop-shadow(0 0 20px rgba(157, 0, 255, 0.8));
+      opacity: 0;
+      transform: scale(0.1);
+    }
+    
+    .crescent-container {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+    }
+    
+    .crescent-moon {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: inset -25px 0px 0 0 #9d00ff;
+      filter: drop-shadow(0 0 20px rgba(157, 0, 255, 0.8));
+      transform: scale(0);
+    }
+    
+    .logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--text-color);
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      margin-top: 30px;
+      opacity: 0;
+      transform: translateY(20px);
+      position: relative;
+    }
+    
+    .logo-text::before {
+      content: "ECLIPSEDEVS";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      color: var(--neon-purple);
+      filter: blur(4px);
+      opacity: 0.7;
+    }
+    
+    .logo-text::after {
+      content: "ECLIPSEDEVS";
+      position: absolute;
+      left: 2px;
+      top: -2px;
+      width: 100%;
+      color: var(--neon-blue);
+      filter: blur(2px);
+      opacity: 0.5;
+      z-index: -1;
+    }
+    
+    .loading-bar {
+      width: 250px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+    }
+    
+    .loading-progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+      box-shadow: 0 0 10px var(--neon-purple);
+    }
+    
+    .loading-text {
+      font-size: 0.8rem;
+      margin-top: 10px;
+      opacity: 0;
+      letter-spacing: 2px;
+    }
+    
+    .stars-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .star {
+      position: absolute;
+      background-color: white;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: twinkle 3s infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; box-shadow: 0 0 3px white; }
+    }
+    
+    /* Main Content Styles */
+    #main-content {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease-in-out;
     }
     
     #canvas-container {
@@ -107,7 +259,8 @@
       margin: 40px 0;
       line-height: 1.6;
       position: relative;
-      animation: fadeIn 2s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
     
     .matrix-text::before {
@@ -120,7 +273,8 @@
     .download-container {
       margin-top: 2rem;
       perspective: 1000px;
-      animation: fadeIn 2.5s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
     
     .download-btn {
@@ -190,7 +344,8 @@
       font-size: 1.2rem;
       color: var(--neon-blue);
       letter-spacing: 3px;
-      animation: fadeIn 3s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
     
     .countdown span {
@@ -213,7 +368,8 @@
       margin-top: 3rem;
       display: flex;
       gap: 2rem;
-      animation: fadeIn 3.5s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
     
     .social-icon {
@@ -250,9 +406,8 @@
       width: 100%;
       text-align: center;
       font-size: 0.9em;
-      opacity: 0.7;
+      opacity: 0;
       letter-spacing: 1px;
-      animation: fadeIn 4s ease forwards;
     }
     
     .footer-logo {
@@ -268,7 +423,7 @@
       background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
       width: 80%;
       left: 10%;
-      opacity: 0.5;
+      opacity: 0;
       z-index: -1;
     }
     
@@ -311,8 +466,7 @@
       transform: perspective(1000px) rotateY(10deg);
       transition: all 0.4s ease;
       opacity: 0;
-      animation: fadeIn 3s ease forwards;
-      animation-delay: calc(var(--delay) * 0.5s);
+      transform: translateY(20px) perspective(1000px) rotateY(10deg);
     }
     
     .feature-card:hover {
@@ -351,6 +505,36 @@
       pointer-events: none;
       z-index: -1;
     }
+
+    /* Reveal animations */
+    .reveal {
+      position: relative;
+    }
+
+    .reveal::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+      z-index: 1;
+    }
+
+    /* Extra effects */
+    .glow-effect {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(157, 0, 255, 0.3) 0%, rgba(157, 0, 255, 0) 70%);
+      pointer-events: none;
+      opacity: 0;
+      mix-blend-mode: screen;
+      z-index: 10;
+      transition: opacity 0.3s ease;
+    }
     
     /* Media Queries */
     @media (max-width: 768px) {
@@ -370,190 +554,511 @@
       .feature-card {
         width: 90%;
       }
+
+      .moon-container {
+        width: 150px;
+        height: 150px;
+      }
+
+      .full-moon {
+        width: 150px;
+        height: 150px;
+      }
+
+      .crescent-container {
+        width: 150px;
+        height: 150px;
+      }
+
+      .crescent-moon {
+        width: 150px;
+        height: 150px;
+      }
+
+      .logo-text {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="canvas-container"></div>
+  <!-- Intro Animation -->
+  <div id="intro-animation">
+    <div class="stars-container" id="stars-container"></div>
+    <div class="moon-container">
+      <div class="full-moon" id="full-moon"></div>
+      <div class="crescent-container" id="crescent-container">
+        <div class="crescent-moon" id="crescent-moon"></div>
+      </div>
+    </div>
+    <div class="logo-text" id="logo-text">ECLIPSEDEVS</div>
+    <div class="loading-bar" id="loading-bar">
+      <div class="loading-progress" id="loading-progress"></div>
+    </div>
+    <div class="loading-text" id="loading-text">INITIALIZING SYSTEM</div>
+  </div>
   
-  <div class="cyber-line"></div>
-  <div class="cyber-line"></div>
-  <div class="cyber-line"></div>
-  
-  <div class="floating-code" style="top: 15%; left: 10%;">01101001 01101110</div>
-  <div class="floating-code" style="top: 30%; right: 5%;">01110000 01101001 01110010 01100001 01100011 01111001</div>
-  <div class="floating-code" style="bottom: 25%; left: 20%;">01110111 01100101</div>
-  <div class="floating-code" style="bottom: 40%; right: 15%;">01100010 01100101 01101100 01101001 01100101 01110110 01100101</div>
-  
-  <div class="content-wrapper">
-    <div class="glitch-container">
-      <h1 class="glitch">In Piracy We Believe</h1>
-    </div>
+  <!-- Main Content -->
+  <div id="main-content">
+    <div id="canvas-container"></div>
     
-    <p class="matrix-text">
-      We're building a revolutionary platform that challenges the norms—a cutting-edge application for PC and mobile
-      that provides access to premium games for those excluded by economic barriers. This is about digital equality,
-      about fairness in the gaming ecosystem, and about the fundamental freedom to play without limitations.
-    </p>
+    <div class="cyber-line"></div>
+    <div class="cyber-line"></div>
+    <div class="cyber-line"></div>
     
-    <div class="features">
-      <div class="feature-card" style="--delay: 1">
-        <div class="feature-icon">⚡</div>
-        <h3 class="feature-title">LIGHTNING FAST</h3>
-        <p class="feature-desc">Experience ultra-fast download speeds with our optimized P2P network architecture and distributed server system.</p>
+    <div class="floating-code" style="top: 15%; left: 10%;">01101001 01101110</div>
+    <div class="floating-code" style="top: 30%; right: 5%;">01110000 01101001 01110010 01100001 01100011 01111001</div>
+    <div class="floating-code" style="bottom: 25%; left: 20%;">01110111 01100101</div>
+    <div class="floating-code" style="bottom: 40%; right: 15%;">01100010 01100101 01101100 01101001 01100101 01110110 01100101</div>
+    
+    <div class="content-wrapper">
+      <div class="glitch-container reveal">
+        <h1 class="glitch">In Piracy We Believe</h1>
       </div>
       
-      <div class="feature-card" style="--delay: 2">
-        <div class="feature-icon">🛡️</div>
-        <h3 class="feature-title">SECURE ACCESS</h3>
-        <p class="feature-desc">Advanced encryption and anonymity tools built-in to ensure your digital freedom remains private and protected.</p>
+      <p class="matrix-text">
+        We're building a revolutionary platform that challenges the norms—a cutting-edge application for PC and mobile
+        that provides access to premium games for those excluded by economic barriers. This is about digital equality,
+        about fairness in the gaming ecosystem, and about the fundamental freedom to play without limitations.
+      </p>
+      
+      <div class="features">
+        <div class="feature-card" data-delay="1">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">LIGHTNING FAST</h3>
+          <p class="feature-desc">Experience ultra-fast download speeds with our optimized P2P network architecture and distributed server system.</p>
+        </div>
+        
+        <div class="feature-card" data-delay="2">
+          <div class="feature-icon">🛡️</div>
+          <h3 class="feature-title">SECURE ACCESS</h3>
+          <p class="feature-desc">Advanced encryption and anonymity tools built-in to ensure your digital freedom remains private and protected.</p>
+        </div>
+        
+        <div class="feature-card" data-delay="3">
+          <div class="feature-icon">🎮</div>
+          <h3 class="feature-title">EXTENSIVE LIBRARY</h3>
+          <p class="feature-desc">Access thousands of titles across multiple platforms, from latest AAA releases to indie classics and retro favorites.</p>
+        </div>
       </div>
       
-      <div class="feature-card" style="--delay: 3">
-        <div class="feature-icon">🎮</div>
-        <h3 class="feature-title">EXTENSIVE LIBRARY</h3>
-        <p class="feature-desc">Access thousands of titles across multiple platforms, from latest AAA releases to indie classics and retro favorites.</p>
-      </div>
-    </div>
-    
-    <div class="download-container">
-      <button class="download-btn">Download Now</button>
-    </div>
-    
-    <div class="countdown">
-      LAUNCHING IN: <span id="countdown-timer">??:??:??</span>
-    </div>
-    
-    <div class="social-icons">
-      <div class="social-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-          <path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/>
-        </svg>
+      <div class="download-container">
+        <button class="download-btn">Download Now</button>
       </div>
       
-      <div class="social-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-          <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
-        </svg>
+      <div class="countdown">
+        LAUNCHING IN: <span id="countdown-timer">??:??:??</span>
       </div>
       
-      <div class="social-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-          <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/>
-        </svg>
+      <div class="social-icons">
+        <div class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/>
+          </svg>
+        </div>
+        
+        <div class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+            <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+          </svg>
+        </div>
+        
+        <div class="social-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
+            <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 11.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/>
+          </svg>
+        </div>
       </div>
+      
+      <footer>
+        <div class="footer-logo">ECLIPSEDEVS</div>
+        <div>&copy; 2025 | Breaking Digital Barriers | All Rights Reserved</div>
+      </footer>
     </div>
-    
-    <footer>
-      <div class="footer-logo">ECLIPSEDEVS</div>
-      <div>&copy; 2025 | Breaking Digital Barriers | All Rights Reserved</div>
-    </footer>
   </div>
 
+  <div class="glow-effect" id="glow-effect"></div>
+
   <script>
-    // Three.js particle background
-    const container = document.getElementById('canvas-container');
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
-    
-    // Create particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 1500;
-    
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      // Position
-      positions[i] = (Math.random() - 0.5) * 2000;
-      positions[i + 1] = (Math.random() - 0.5) * 1000;
-      positions[i + 2] = (Math.random() - 0.8) * 1000;
-      
-      // Color - mix of blue and green
-      const mixFactor = Math.random();
-      colors[i] = 0; // R
-      colors[i + 1] = mixFactor * 1.0; // G
-      colors[i + 2] = (1 - mixFactor) * 0.8; // B
+    // Create stars for intro animation
+    const starsContainer = document.getElementById('stars-container');
+    for (let i = 0; i < 200; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 3}s`;
+      starsContainer.appendChild(star);
     }
-    
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 2,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.6
+
+    // Intro animation sequence
+    document.addEventListener('DOMContentLoaded', () => {
+      const fullMoon = document.getElementById('full-moon');
+      const crescentContainer = document.getElementById('crescent-container');
+      const crescentMoon = document.getElementById('crescent-moon');
+      const logoText = document.getElementById('logo-text');
+      const loadingBar = document.getElementById('loading-bar');
+      const loadingProgress = document.getElementById('loading-progress');
+      const loadingText = document.getElementById('loading-text');
+      const introAnimation = document.getElementById('intro-animation');
+      const mainContent = document.getElementById('main-content');
+      
+      // GSAP Animation Timeline
+      const tl = gsap.timeline();
+      
+      tl.to(fullMoon, { 
+        opacity: 1, 
+        scale: 1, 
+        duration: 2, 
+        ease: "power2.out" 
+      })
+      .to(fullMoon, { 
+        boxShadow: "0 0 50px rgba(157, 0, 255, 0.8)", 
+        duration: 1 
+      })
+      .to(fullMoon, { 
+        opacity: 0, 
+        duration: 1,
+        ease: "power2.in"
+      })
+      .to(crescentContainer, { 
+        opacity: 1, 
+        duration: 0.5 
+      }, "-=0.5")
+      .to(crescentMoon, { 
+        scale: 1, 
+        duration: 1.5, 
+        ease: "elastic.out(1, 0.5)",
+        rotation: -30
+      })
+      .to(logoText, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1, 
+        ease: "power2.out" 
+      })
+      .to(loadingBar, { 
+        opacity: 1, 
+        duration: 0.5 
+      })
+      .to(loadingText, { 
+        opacity: 1, 
+        duration: 0.5 
+      }, "-=0.25")
+      .to(loadingProgress, { 
+        width: "100%", 
+        duration: 3, 
+        ease: "power1.inOut" 
+      })
+      .to([crescentContainer, logoText, loadingBar, loadingText], { 
+        opacity: 0, 
+        y: -20, 
+        duration: 0.5, 
+        stagger: 0.1 
+      })
+      .to(introAnimation, { 
+        opacity: 0, 
+        duration: 1,
+        onComplete: () => {
+          introAnimation.style.display = "none";
+          mainContent.style.visibility = "visible";
+          gsap.to(mainContent, { opacity: 1, duration: 1 });
+          initMainContent();
+        }
+      });
+      
+      // Loading text animation
+      const loadingMessages = [
+        "INITIALIZING SYSTEM",
+        "BYPASSING SECURITY",
+        "ESTABLISHING CONNECTION",
+        "ACCESSING DATABASE",
+        "DECRYPTING FILES",
+        "FINALIZING SYSTEMS"
+      ];
+      
+      let msgIndex = 0;
+      const updateLoadingText = setInterval(() => {
+        msgIndex = (msgIndex + 1) % loadingMessages.length;
+        gsap.to(loadingText, {
+          opacity: 0,
+          duration: 0.2,
+          onComplete: () => {
+            loadingText.textContent = loadingMessages[msgIndex];
+            gsap.to(loadingText, { opacity: 1, duration: 0.2 });
+          }
+        });
+      }, 1000);
+      
+      setTimeout(() => {
+        clearInterval(updateLoadingText);
+      }, 7000);
     });
     
-    const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particleSystem);
-    
-    camera.position.z = 300;
-    
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate);
+    // Main content animations
+    function initMainContent() {
+      // Three.js particle background
+      const container = document.getElementById('canvas-container');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
       
-      particleSystem.rotation.y += 0.0005;
-      particleSystem.rotation.x += 0.0002;
-      
-      renderer.render(scene, camera);
-    };
-    
-    animate();
-    
-    // Window resize handler
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-    
-    // Make the question marks blink
-    const countdownEl = document.getElementById('countdown-timer');
-    
-    // Add random floating code elements
-    const createFloatingCode = () => {
-      const element = document.createElement('div');
-      element.classList.add('floating-code');
+      container.appendChild(renderer.domElement);
       
-      // Generate binary string
-      let binary = '';
-      for (let i = 0; i < Math.floor(Math.random() * 24) + 8; i++) {
-        binary += Math.round(Math.random()).toString();
-        if (i % 8 === 7) binary += ' ';
+      // Create particles
+      const particlesGeometry = new THREE.BufferGeometry();
+      const particleCount = 1500;
+      
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        // Position
+        positions[i] = (Math.random() - 0.5) * 2000;
+        positions[i + 1] = (Math.random() - 0.5) * 1000;
+        positions[i + 2] = (Math.random() - 0.8) * 1000;
+        
+        // Color - mix of blue, green and purple
+        const mixFactor = Math.random();
+        colors[i] = mixFactor > 0.7 ? 0.5 : 0; // R - add some purple
+        colors[i + 1] = mixFactor * 1.0; // G
+        colors[i + 2] = (1 - mixFactor) * 0.9; // B
       }
       
-      element.textContent = binary;
+      particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
       
-      // Random position
-      element.style.top = ${Math.random() * 100}%;
-      element.style.left = ${Math.random() * 100}%;
-      element.style.opacity = ${Math.random() * 0.2 + 0.1};
-      element.style.fontSize = ${Math.random() * 0.5 + 0.7}rem;
+      const particlesMaterial = new THREE.PointsMaterial({
+        size: 2,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.6
+      });
       
-      document.body.appendChild(element);
+      const particleSystem = new THREE.Points(particlesGeometry, particlesMaterial);
+      scene.add(particleSystem);
       
-      // Remove after animation
-      setTimeout(() => {
-        element.style.opacity = '0';
+      camera.position.z = 300;
+      
+      // Animation loop
+      const animate = () => {
+        requestAnimationFrame(animate);
+        
+        particleSystem.rotation.y += 0.0005;
+        particleSystem.rotation.x += 0.0002;
+        
+        renderer.render(scene, camera);
+      };
+      
+      animate();
+      
+      // Window resize handler
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+      
+      // Animate elements in
+      gsap.to('.cyber-line', {
+        opacity: 0.5,
+        duration: 1,
+        stagger: 0.2,
+        ease: "power2.out"
+      });
+      
+      // Reveal text animation for glitch title
+      const reveal = document.querySelector('.reveal');
+      gsap.to(reveal.querySelector('::after'), {
+        width: '100%',
+        duration: 1.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+          gsap.to(reveal.querySelector('::after'), {
+            left: '100%',
+            duration: 0.5,
+            ease: "power2.inOut"
+          });
+        }
+      });
+      
+      // Animate matrix text
+      gsap.to('.matrix-text', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        delay: 0.5,
+        ease: "power2.out"
+      });
+      
+      // Animate feature cards
+      gsap.to('.feature-card', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        delay: 1,
+        ease: "back.out(1.2)"
+      });
+      
+      // Animate download button
+      gsap.to('.download-container', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 1.8,
+        ease: "power2.out"
+      });
+      
+      // Animate countdown
+      gsap.to('.countdown', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 2,
+        ease: "power2.out"
+      });
+      
+      // Animate social icons
+      gsap.to('.social-icons', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        delay: 2.2,
+        ease: "power2.out"
+      });
+      
+      // Animate footer
+      gsap.to('footer', {
+        opacity: 0.7,
+        duration: 0.8,
+        delay: 2.4,
+        ease: "power2.out"
+      });
+      
+      // Countdown timer animation
+      const countdownEl = document.getElementById('countdown-timer');
+      setInterval(() => {
+        const days = Math.floor(Math.random() * 30) + 10;
+        const hours = Math.floor(Math.random() * 24);
+        const minutes = Math.floor(Math.random() * 60);
+        const seconds = Math.floor(Math.random() * 60);
+        
+        countdownEl.textContent = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }, 1000);
+      
+      // Add floating code elements
+      const createFloatingCode = () => {
+        const element = document.createElement('div');
+        element.classList.add('floating-code');
+        
+        // Generate binary string
+        let binary = '';
+        for (let i = 0; i < Math.floor(Math.random() * 24) + 8; i++) {
+          binary += Math.round(Math.random()).toString();
+          if (i % 8 === 7) binary += ' ';
+        }
+        
+        element.textContent = binary;
+        
+        // Random position
+        element.style.top = `${Math.random() * 100}%`;
+        element.style.left = `${Math.random() * 100}%`;
+        element.style.opacity = `${Math.random() * 0.2 + 0.1}`;
+        element.style.fontSize = `${Math.random() * 0.5 + 0.7}rem`;
+        
+        document.body.appendChild(element);
+        
+        // Animate in
+        gsap.fromTo(element, 
+          { opacity: 0, y: -20 },
+          { opacity: parseFloat(element.style.opacity), y: 0, duration: 1 }
+        );
+        
+        // Remove after animation
         setTimeout(() => {
-          element.remove();
-        }, 2000);
-      }, Math.random() * 10000 + 5000);
-    };
-    
-    // Add floating code periodically
-    setInterval(createFloatingCode, 3000);
-    
-    // Add initial floating code elements
-    for (let i = 0; i < 5; i++) {
-      createFloatingCode();
+          gsap.to(element, {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => element.remove()
+          });
+        }, Math.random() * 10000 + 5000);
+      };
+      
+      // Add floating code periodically
+      setInterval(createFloatingCode, 3000);
+      
+      // Add initial floating code elements
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => createFloatingCode(), i * 200);
+      }
+      
+      // Mouse glow effect
+      const glowEffect = document.getElementById('glow-effect');
+      
+      document.addEventListener('mousemove', (e) => {
+        gsap.to(glowEffect, {
+          left: e.clientX - 75,
+          top: e.clientY - 75,
+          opacity: 0.6,
+          duration: 0.3
+        });
+      });
+      
+      document.addEventListener('mouseout', () => {
+        gsap.to(glowEffect, {
+          opacity: 0,
+          duration: 0.3
+        });
+      });
+
+      // Interactive elements
+      const downloadBtn = document.querySelector('.download-btn');
+      
+      downloadBtn.addEventListener('mouseenter', () => {
+        gsap.to(downloadBtn, {
+          scale: 1.05,
+          duration: 0.3
+        });
+      });
+      
+      downloadBtn.addEventListener('mouseleave', () => {
+        gsap.to(downloadBtn, {
+          scale: 1,
+          duration: 0.3
+        });
+      });
+      
+      // Easter egg: Konami code
+      let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+      let konamiIndex = 0;
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === konamiCode[konamiIndex]) {
+          konamiIndex++;
+          if (konamiIndex === konamiCode.length) {
+            // Easter egg activated
+            document.body.style.setProperty('--neon-green', '#ff00ff');
+            document.body.style.setProperty('--neon-blue', '#00ffff');
+            
+            gsap.to('.cyber-line', {
+              background: 'linear-gradient(90deg, transparent, #ff00ff, transparent)',
+              duration: 1
+            });
+            
+            gsap.fromTo(
+              '.glitch', 
+              { scale: 1 }, 
+              { scale: 1.1, duration: 0.5, yoyo: true, repeat: 3 }
+            );
+            
+            konamiIndex = 0;
+          }
+        } else {
+          konamiIndex = 0;
+        }
+      });
     }
   </script>
 </body>
