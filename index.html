@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>In Piracy We Believe | EclipseDevs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
   <style>
@@ -16,10 +16,10 @@
     }
     
     :root {
+      --neon-purple: #9d00ff;
       --neon-green: #00ffae;
       --neon-blue: #00a2ff;
-      --neon-purple: #9d00ff;
-      --dark-bg: #0a0a0a;
+      --dark-bg: #080610;
       --text-color: #f5f5f5;
     }
     
@@ -31,155 +31,95 @@
       overflow-x: hidden;
       position: relative;
     }
-    
+
     /* Intro Animation */
-    #intro-animation {
+    .intro-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: #000;
-      z-index: 9999;
+      background-color: var(--dark-bg);
       display: flex;
-      align-items: center;
       justify-content: center;
-      flex-direction: column;
+      align-items: center;
+      z-index: 9999;
+      perspective: 1000px;
     }
-    
+
     .moon-container {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 300px;
+      height: 300px;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
-    
-    .full-moon {
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle at 50% 50%, #9d00ff 10%, #6a00b0 60%, #4a0080 100%);
+
+    .moon {
+      width: 0;
+      height: 0;
       border-radius: 50%;
-      position: absolute;
-      filter: blur(4px) drop-shadow(0 0 20px rgba(157, 0, 255, 0.8));
-      opacity: 0;
-      transform: scale(0.1);
-    }
-    
-    .crescent-container {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-    }
-    
-    .crescent-moon {
+      background: radial-gradient(circle at 30% 30%, #d5b8ff, #9d00ff, #5a017f);
+      box-shadow: 0 0 60px #9d00ff, 0 0 100px #5a017f;
       position: relative;
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      background: transparent;
-      box-shadow: inset -25px 0px 0 0 #9d00ff;
-      filter: drop-shadow(0 0 20px rgba(157, 0, 255, 0.8));
-      transform: scale(0);
+      overflow: hidden;
+      transform-style: preserve-3d;
     }
-    
+
+    .moon::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 60%);
+      border-radius: 50%;
+    }
+
+    .moon-shadow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: var(--dark-bg);
+      transform: translateX(100%);
+    }
+
     .logo-text {
+      position: absolute;
       font-family: 'Orbitron', sans-serif;
-      font-size: 3rem;
-      font-weight: 700;
-      color: var(--text-color);
-      text-transform: uppercase;
-      letter-spacing: 5px;
-      margin-top: 30px;
-      opacity: 0;
-      transform: translateY(20px);
-      position: relative;
-    }
-    
-    .logo-text::before {
-      content: "ECLIPSEDEVS";
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
+      font-weight: 900;
+      font-size: 0;
       color: var(--neon-purple);
-      filter: blur(4px);
-      opacity: 0.7;
-    }
-    
-    .logo-text::after {
-      content: "ECLIPSEDEVS";
-      position: absolute;
-      left: 2px;
-      top: -2px;
-      width: 100%;
-      color: var(--neon-blue);
-      filter: blur(2px);
-      opacity: 0.5;
-      z-index: -1;
-    }
-    
-    .loading-bar {
-      width: 250px;
-      height: 3px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 2px;
-      margin-top: 30px;
-      position: relative;
-      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple);
       opacity: 0;
     }
-    
-    .loading-progress {
+
+    /* Stars background for intro */
+    .stars-intro {
       position: absolute;
-      left: 0;
       top: 0;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
-      box-shadow: 0 0 10px var(--neon-purple);
-    }
-    
-    .loading-text {
-      font-size: 0.8rem;
-      margin-top: 10px;
-      opacity: 0;
-      letter-spacing: 2px;
-    }
-    
-    .stars-container {
-      position: absolute;
+      left: 0;
       width: 100%;
       height: 100%;
-      overflow: hidden;
-      z-index: -1;
+      pointer-events: none;
     }
-    
+
     .star {
       position: absolute;
-      background-color: white;
-      width: 2px;
-      height: 2px;
+      background-color: #fff;
       border-radius: 50%;
-      opacity: 0.5;
-      animation: twinkle 3s infinite;
     }
-    
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.5; }
-      50% { opacity: 1; box-shadow: 0 0 3px white; }
-    }
-    
-    /* Main Content Styles */
-    #main-content {
+
+    /* Main Website */
+    .main-content {
       opacity: 0;
       visibility: hidden;
-      transition: opacity 1s ease-in-out;
+      transition: opacity 1s ease;
     }
     
     #canvas-container {
@@ -191,18 +131,80 @@
       z-index: -1;
     }
     
+    .nav-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(8,6,16,0.9), rgba(8,6,16,0));
+      backdrop-filter: blur(5px);
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--neon-purple);
+      text-shadow: 0 0 10px var(--neon-purple);
+      letter-spacing: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 50%;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-link:hover {
+      color: var(--neon-purple);
+      text-shadow: 0 0 5px var(--neon-purple);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
     .glitch-container {
       position: relative;
+      margin-top: 150px;
+      perspective: 1000px;
     }
     
     .glitch {
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
-      font-size: 3.5em;
+      font-size: 4rem;
       text-transform: uppercase;
       position: relative;
       text-shadow: 0 0 10px var(--neon-green);
       animation: glitch 2s infinite;
+      transform-style: preserve-3d;
     }
     
     .glitch::before, .glitch::after {
@@ -222,7 +224,7 @@
     }
     
     .glitch::after {
-      color: var(--neon-green);
+      color: var(--neon-purple);
       animation: glitch-layer 2s infinite reverse;
       clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
       transform: translate(2px, -2px);
@@ -231,7 +233,7 @@
     @keyframes glitch {
       0%, 100% { text-shadow: 0 0 10px var(--neon-green); }
       20% { text-shadow: -3px 0 var(--neon-blue), 3px 0 var(--neon-green); }
-      40% { text-shadow: 3px 0 var(--neon-blue), -3px 0 var(--neon-green); }
+      40% { text-shadow: 3px 0 var(--neon-purple), -3px 0 var(--neon-green); }
       60% { text-shadow: 0 0 15px var(--neon-green); }
     }
     
@@ -251,54 +253,85 @@
       position: relative;
     }
     
+    .tagline {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      text-align: center;
+      margin: 15px 0 40px;
+      color: var(--neon-blue);
+      letter-spacing: 2px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 0.5s;
+    }
+    
     .matrix-text {
       font-family: 'Roboto Mono', monospace;
-      font-size: 1.3em;
+      font-size: 1.3rem;
       max-width: 800px;
       text-align: center;
       margin: 40px 0;
-      line-height: 1.6;
+      line-height: 1.8;
       position: relative;
       opacity: 0;
       transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 0.8s;
+      padding: 30px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      border: 1px solid rgba(157, 0, 255, 0.2);
+      box-shadow: 0 0 30px rgba(157, 0, 255, 0.1);
+      backdrop-filter: blur(5px);
     }
     
     .matrix-text::before {
-      content: ">";
+      content: "> ";
       color: var(--neon-green);
       padding-right: 8px;
       animation: blink 1s infinite;
     }
     
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     .download-container {
-      margin-top: 2rem;
+      margin-top: 3rem;
       perspective: 1000px;
       opacity: 0;
       transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 1.2s;
+      position: relative;
     }
     
     .download-btn {
       background: transparent;
-      color: var(--neon-green);
-      border: 2px solid var(--neon-green);
-      padding: 15px 40px;
-      font-size: 1.2em;
+      color: var(--neon-purple);
+      border: 2px solid var(--neon-purple);
+      padding: 18px 50px;
+      font-size: 1.4rem;
       font-family: 'Orbitron', sans-serif;
       letter-spacing: 2px;
-      border-radius: 4px;
+      border-radius: 50px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       transition: all 0.4s ease;
       text-transform: uppercase;
-      box-shadow: 0 0 15px rgba(0, 255, 174, 0.4);
+      box-shadow: 0 0 20px rgba(157, 0, 255, 0.4);
       transform-style: preserve-3d;
       transform: rotateX(10deg);
+      z-index: 1;
     }
     
     .download-btn:hover {
-      box-shadow: 0 0 25px rgba(0, 255, 174, 0.7);
-      transform: rotateX(0deg);
+      box-shadow: 0 0 30px rgba(157, 0, 255, 0.7);
+      transform: rotateX(0deg) scale(1.05);
+      color: #fff;
     }
     
     .download-btn::before {
@@ -308,24 +341,44 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 255, 174, 0.2), transparent);
+      background: linear-gradient(90deg, transparent, rgba(157, 0, 255, 0.2), transparent);
       animation: shine 2s infinite;
+      z-index: -1;
     }
     
     .download-btn::after {
-      content: "UPCOMING RELEASE";
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(157, 0, 255, 0.8), transparent);
+      transition: all 0.6s ease;
+      z-index: -2;
+    }
+    
+    .download-btn:hover::after {
+      left: 100%;
+    }
+    
+    .download-overlay {
       position: absolute;
       top: 0;
       left: 0;
-      height: 100%;
       width: 100%;
+      height: 100%;
       background: rgba(0, 0, 0, 0.85);
-      color: var(--neon-green);
+      color: var(--neon-purple);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9em;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 2px;
       animation: pulse 2s infinite;
+      z-index: 2;
+      border-radius: 50px;
     }
     
     @keyframes shine {
@@ -342,10 +395,16 @@
       margin-top: 1.5rem;
       font-family: 'Orbitron', sans-serif;
       font-size: 1.2rem;
-      color: var(--neon-blue);
+      color: var(--neon-purple);
       letter-spacing: 3px;
       opacity: 0;
       transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 1.4s;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 10px 30px;
+      border-radius: 30px;
+      border: 1px solid rgba(157, 0, 255, 0.3);
     }
     
     .countdown span {
@@ -354,76 +413,187 @@
       animation: blink 1.5s infinite;
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
     
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin: 4rem 0;
+      max-width: 1200px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 1s;
+    }
+    
+    .feature-card {
+      background: rgba(8, 6, 16, 0.8);
+      border: 1px solid;
+      border-image: linear-gradient(45deg, var(--neon-purple), var(--neon-blue)) 1;
+      border-radius: 15px;
+      padding: 2.5rem;
+      width: 320px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transform: perspective(1000px) rotateY(0deg);
+      transition: all 0.6s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(157, 0, 255, 0.1), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      z-index: -1;
+    }
+    
+    .feature-card:hover {
+      transform: perspective(1000px) rotateY(5deg) translateY(-10px);
+      box-shadow: 0 15px 35px rgba(157, 0, 255, 0.3);
+      border-image: linear-gradient(45deg, var(--neon-green), var(--neon-purple)) 1;
+    }
+    
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+    
+    .feature-icon {
+      color: var(--neon-purple);
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      text-shadow: 0 0 15px var(--neon-purple);
+      position: relative;
+    }
+    
+    .feature-icon::after {
+      content: '';
+      position: absolute;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .feature-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      color: var(--neon-blue);
+      letter-spacing: 1px;
+    }
+    
+    .feature-desc {
+      font-size: 1rem;
+      line-height: 1.6;
+      text-align: center;
+      color: rgba(245, 245, 245, 0.8);
+    }
+    
     .social-icons {
-      margin-top: 3rem;
+      margin-top: 4rem;
       display: flex;
       gap: 2rem;
       opacity: 0;
       transform: translateY(20px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 1.6s;
     }
     
     .social-icon {
-      width: 3rem;
-      height: 3rem;
-      border: 2px solid var(--text-color);
+      width: 4rem;
+      height: 4rem;
+      border: 2px solid var(--neon-purple);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--neon-purple);
+      transform: scale(0);
+      transition: transform 0.4s ease;
+      border-radius: 50%;
+      z-index: -1;
     }
     
     .social-icon:hover {
-      border-color: var(--neon-green);
-      transform: scale(1.1);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(157, 0, 255, 0.4);
+    }
+    
+    .social-icon:hover::before {
+      transform: scale(1);
     }
     
     .social-icon svg {
-      width: 1.5rem;
-      height: 1.5rem;
+      width: 1.8rem;
+      height: 1.8rem;
       fill: var(--text-color);
       transition: fill 0.3s ease;
+      z-index: 1;
     }
     
     .social-icon:hover svg {
-      fill: var(--neon-green);
+      fill: var(--dark-bg);
     }
     
     footer {
-      position: absolute;
-      bottom: 20px;
       width: 100%;
+      padding: 2rem 0;
       text-align: center;
-      font-size: 0.9em;
+      font-size: 1rem;
       opacity: 0;
       letter-spacing: 1px;
+      background: linear-gradient(to top, rgba(8,6,16,0.9), rgba(8,6,16,0));
+      margin-top: 5rem;
+      backdrop-filter: blur(5px);
+      animation: fadeInUp 1s forwards;
+      animation-delay: 1.8s;
     }
     
     .footer-logo {
       font-family: 'Orbitron', sans-serif;
-      color: var(--neon-green);
+      color: var(--neon-purple);
       font-weight: bold;
       letter-spacing: 2px;
+      margin-bottom: 10px;
+      font-size: 1.4rem;
     }
     
     .cyber-line {
       position: fixed;
       height: 2px;
-      background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+      background: linear-gradient(90deg, transparent, var(--neon-purple), transparent);
       width: 80%;
       left: 10%;
-      opacity: 0;
+      opacity: 0.5;
       z-index: -1;
     }
     
@@ -447,103 +617,61 @@
       100% { transform: translateX(100%); }
     }
     
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin: 3rem 0;
-      max-width: 1000px;
-    }
-    
-    .feature-card {
-      background: rgba(10, 10, 10, 0.8);
-      border: 1px solid var(--neon-green);
-      border-radius: 8px;
-      padding: 1.5rem;
-      width: 280px;
-      box-shadow: 0 0 15px rgba(0, 255, 174, 0.2);
-      transform: perspective(1000px) rotateY(10deg);
-      transition: all 0.4s ease;
-      opacity: 0;
-      transform: translateY(20px) perspective(1000px) rotateY(10deg);
-    }
-    
-    .feature-card:hover {
-      transform: perspective(1000px) rotateY(0deg);
-      box-shadow: 0 0 20px rgba(0, 255, 174, 0.4);
-    }
-    
-    .feature-icon {
-      color: var(--neon-green);
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-    
-    .feature-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      margin-bottom: 0.8rem;
-      text-align: center;
-      color: var(--neon-blue);
-    }
-    
-    .feature-desc {
-      font-size: 0.9rem;
-      line-height: 1.5;
-      text-align: center;
-    }
-    
     /* Floating elements */
     .floating-code {
       position: absolute;
-      color: var(--neon-green);
-      opacity: 0.2;
+      color: var(--neon-purple);
+      opacity: 0.15;
       font-family: 'Roboto Mono', monospace;
       font-size: 0.9rem;
       pointer-events: none;
       z-index: -1;
     }
-
-    /* Reveal animations */
-    .reveal {
-      position: relative;
-    }
-
-    .reveal::after {
-      content: '';
+    
+    /* Scroll indicator */
+    .scroll-indicator {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
-      z-index: 1;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      opacity: 0.7;
     }
-
-    /* Extra effects */
-    .glow-effect {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(157, 0, 255, 0.3) 0%, rgba(157, 0, 255, 0) 70%);
-      pointer-events: none;
-      opacity: 0;
-      mix-blend-mode: screen;
-      z-index: 10;
-      transition: opacity 0.3s ease;
+    
+    .scroll-arrow {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--neon-purple);
+      border-left: none;
+      border-top: none;
+      transform: rotate(45deg);
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+      40% { transform: translateY(-20px) translateX(-50%); }
+      60% { transform: translateY(-10px) translateX(-50%); }
     }
     
     /* Media Queries */
-    @media (max-width: 768px) {
-      .glitch {
-        font-size: 2.5em;
+    @media (max-width: 1200px) {
+      .features {
+        gap: 20px;
       }
       
-      .matrix-text {
-        font-size: 1.1em;
+      .feature-card {
+        width: 300px;
+        padding: 2rem;
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .glitch {
+        font-size: 3rem;
+      }
+      
+      .nav-links {
+        display: none;
       }
       
       .features {
@@ -553,54 +681,60 @@
       
       .feature-card {
         width: 90%;
+        max-width: 400px;
       }
-
-      .moon-container {
-        width: 150px;
-        height: 150px;
-      }
-
-      .full-moon {
-        width: 150px;
-        height: 150px;
-      }
-
-      .crescent-container {
-        width: 150px;
-        height: 150px;
-      }
-
-      .crescent-moon {
-        width: 150px;
-        height: 150px;
-      }
-
-      .logo-text {
+    }
+    
+    @media (max-width: 600px) {
+      .glitch {
         font-size: 2rem;
+      }
+      
+      .matrix-text {
+        font-size: 1rem;
+      }
+      
+      .download-btn {
+        padding: 15px 30px;
+        font-size: 1.1rem;
+      }
+      
+      .nav-logo {
+        font-size: 1.4rem;
+      }
+      
+      .moon {
+        width: 200px;
+        height: 200px;
       }
     }
   </style>
 </head>
 <body>
   <!-- Intro Animation -->
-  <div id="intro-animation">
-    <div class="stars-container" id="stars-container"></div>
+  <div class="intro-container" id="intro">
     <div class="moon-container">
-      <div class="full-moon" id="full-moon"></div>
-      <div class="crescent-container" id="crescent-container">
-        <div class="crescent-moon" id="crescent-moon"></div>
+      <div class="moon" id="moon">
+        <div class="moon-shadow" id="moon-shadow"></div>
       </div>
     </div>
-    <div class="logo-text" id="logo-text">ECLIPSEDEVS</div>
-    <div class="loading-bar" id="loading-bar">
-      <div class="loading-progress" id="loading-progress"></div>
-    </div>
-    <div class="loading-text" id="loading-text">INITIALIZING SYSTEM</div>
+    <div class="logo-text" id="logo-text">EclipseDevs</div>
+    <div class="stars-intro" id="stars-intro"></div>
   </div>
-  
-  <!-- Main Content -->
-  <div id="main-content">
+
+  <!-- Main Website -->
+  <div class="main-content" id="main-content">
     <div id="canvas-container"></div>
+    
+    <nav class="nav-bar">
+      <div class="nav-logo">EclipseDevs</div>
+      <div class="nav-links">
+        <a href="#" class="nav-link">Home</a>
+        <a href="#" class="nav-link">Features</a>
+        <a href="#" class="nav-link">About</a>
+        <a href="#" class="nav-link">Contact</a>
+      </div>
+    </nav>
     
     <div class="cyber-line"></div>
     <div class="cyber-line"></div>
@@ -612,9 +746,11 @@
     <div class="floating-code" style="bottom: 40%; right: 15%;">01100010 01100101 01101100 01101001 01100101 01110110 01100101</div>
     
     <div class="content-wrapper">
-      <div class="glitch-container reveal">
+      <div class="glitch-container">
         <h1 class="glitch">In Piracy We Believe</h1>
       </div>
+      
+      <div class="tagline">Breaking Digital Barriers | Challenging The System</div>
       
       <p class="matrix-text">
         We're building a revolutionary platform that challenges the norms—a cutting-edge application for PC and mobile
@@ -623,27 +759,28 @@
       </p>
       
       <div class="features">
-        <div class="feature-card" data-delay="1">
+        <div class="feature-card">
           <div class="feature-icon">⚡</div>
           <h3 class="feature-title">LIGHTNING FAST</h3>
-          <p class="feature-desc">Experience ultra-fast download speeds with our optimized P2P network architecture and distributed server system.</p>
+          <p class="feature-desc">Experience ultra-fast download speeds with our optimized P2P network architecture and distributed server system. Get your content in record time with minimal waiting.</p>
         </div>
         
-        <div class="feature-card" data-delay="2">
+        <div class="feature-card">
           <div class="feature-icon">🛡️</div>
           <h3 class="feature-title">SECURE ACCESS</h3>
-          <p class="feature-desc">Advanced encryption and anonymity tools built-in to ensure your digital freedom remains private and protected.</p>
+          <p class="feature-desc">Advanced encryption and anonymity tools built-in to ensure your digital freedom remains private and protected. Your security is our priority.</p>
         </div>
         
-        <div class="feature-card" data-delay="3">
+        <div class="feature-card">
           <div class="feature-icon">🎮</div>
           <h3 class="feature-title">EXTENSIVE LIBRARY</h3>
-          <p class="feature-desc">Access thousands of titles across multiple platforms, from latest AAA releases to indie classics and retro favorites.</p>
+          <p class="feature-desc">Access thousands of titles across multiple platforms, from latest AAA releases to indie classics and retro favorites. Our catalog grows every day.</p>
         </div>
       </div>
       
       <div class="download-container">
         <button class="download-btn">Download Now</button>
+        <div class="download-overlay">UPCOMING RELEASE</div>
       </div>
       
       <div class="countdown">
@@ -659,145 +796,136 @@
         
         <div class="social-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-            <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
+    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/>
           </svg>
         </div>
         
         <div class="social-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
-            <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 11.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/>
+            <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/>
           </svg>
         </div>
       </div>
       
-      <footer>
-        <div class="footer-logo">ECLIPSEDEVS</div>
-        <div>&copy; 2025 | Breaking Digital Barriers | All Rights Reserved</div>
-      </footer>
+      <div class="scroll-indicator">
+        <div class="scroll-arrow"></div>
+      </div>
     </div>
+    
+    <footer>
+      <div class="footer-logo">ECLIPSEDEVS</div>
+      <div>&copy; 2025 | Breaking Digital Barriers | All Rights Reserved</div>
+    </footer>
   </div>
-
-  <div class="glow-effect" id="glow-effect"></div>
 
   <script>
     // Create stars for intro animation
-    const starsContainer = document.getElementById('stars-container');
+    const starsContainer = document.getElementById('stars-intro');
     for (let i = 0; i < 200; i++) {
       const star = document.createElement('div');
       star.classList.add('star');
-      star.style.left = `${Math.random() * 100}%`;
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.animationDelay = `${Math.random() * 3}s`;
+      
+      // Random position
+      const xPos = Math.random() * window.innerWidth;
+      const yPos = Math.random() * window.innerHeight;
+      
+      // Random size
+      const size = Math.random() * 2;
+      
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.left = `${xPos}px`;
+      star.style.top = `${yPos}px`;
+      star.style.opacity = Math.random();
+      
       starsContainer.appendChild(star);
     }
-
-    // Intro animation sequence
+    
+    // Intro Animation Sequence
     document.addEventListener('DOMContentLoaded', () => {
-      const fullMoon = document.getElementById('full-moon');
-      const crescentContainer = document.getElementById('crescent-container');
-      const crescentMoon = document.getElementById('crescent-moon');
+      const moon = document.getElementById('moon');
+      const moonShadow = document.getElementById('moon-shadow');
       const logoText = document.getElementById('logo-text');
-      const loadingBar = document.getElementById('loading-bar');
-      const loadingProgress = document.getElementById('loading-progress');
-      const loadingText = document.getElementById('loading-text');
-      const introAnimation = document.getElementById('intro-animation');
+      const intro = document.getElementById('intro');
       const mainContent = document.getElementById('main-content');
       
-      // GSAP Animation Timeline
+      // Timeline for the intro animation
       const tl = gsap.timeline();
       
-      tl.to(fullMoon, { 
-        opacity: 1, 
-        scale: 1, 
+      // Initial setup
+      gsap.set(moon, { width: 0, height: 0, opacity: 0 });
+      gsap.set(moonShadow, { transform: 'translateX(100%)' });
+      gsap.set(logoText, { fontSize: 0, opacity: 0 });
+      
+      // Animation sequence
+      tl.to(moon, { 
         duration: 2, 
-        ease: "power2.out" 
-      })
-      .to(fullMoon, { 
-        boxShadow: "0 0 50px rgba(157, 0, 255, 0.8)", 
-        duration: 1 
-      })
-      .to(fullMoon, { 
-        opacity: 0, 
-        duration: 1,
-        ease: "power2.in"
-      })
-      .to(crescentContainer, { 
+        width: 300, 
+        height: 300, 
         opacity: 1, 
-        duration: 0.5 
-      }, "-=0.5")
-      .to(crescentMoon, { 
-        scale: 1, 
-        duration: 1.5, 
-        ease: "elastic.out(1, 0.5)",
-        rotation: -30
-      })
-      .to(logoText, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 1, 
-        ease: "power2.out" 
-      })
-      .to(loadingBar, { 
-        opacity: 1, 
-        duration: 0.5 
-      })
-      .to(loadingText, { 
-        opacity: 1, 
-        duration: 0.5 
-      }, "-=0.25")
-      .to(loadingProgress, { 
-        width: "100%", 
-        duration: 3, 
-        ease: "power1.inOut" 
-      })
-      .to([crescentContainer, logoText, loadingBar, loadingText], { 
-        opacity: 0, 
-        y: -20, 
-        duration: 0.5, 
-        stagger: 0.1 
-      })
-      .to(introAnimation, { 
-        opacity: 0, 
-        duration: 1,
+        ease: "power3.out",
         onComplete: () => {
-          introAnimation.style.display = "none";
-          mainContent.style.visibility = "visible";
-          gsap.to(mainContent, { opacity: 1, duration: 1 });
-          initMainContent();
+          // Add stars twinkling animation
+          const stars = document.querySelectorAll('.star');
+          stars.forEach(star => {
+            gsap.to(star, {
+              opacity: Math.random(),
+              duration: 1 + Math.random() * 2,
+              repeat: -1,
+              yoyo: true
+            });
+          });
         }
-      });
-      
-      // Loading text animation
-      const loadingMessages = [
-        "INITIALIZING SYSTEM",
-        "BYPASSING SECURITY",
-        "ESTABLISHING CONNECTION",
-        "ACCESSING DATABASE",
-        "DECRYPTING FILES",
-        "FINALIZING SYSTEMS"
-      ];
-      
-      let msgIndex = 0;
-      const updateLoadingText = setInterval(() => {
-        msgIndex = (msgIndex + 1) % loadingMessages.length;
-        gsap.to(loadingText, {
-          opacity: 0,
-          duration: 0.2,
-          onComplete: () => {
-            loadingText.textContent = loadingMessages[msgIndex];
-            gsap.to(loadingText, { opacity: 1, duration: 0.2 });
+      })
+      .to(moonShadow, { 
+        duration: 2, 
+        transform: 'translateX(0)', 
+        ease: "power2.inOut" 
+      }, "-=0.5")
+      .to(moon, {
+        duration: 1,
+        boxShadow: '0 0 80px #9d00ff, 0 0 120px #5a017f',
+        ease: "power1.out"
+      }, "-=0.5")
+      .to(logoText, { 
+        duration: 1.5, 
+        fontSize: '4rem', 
+        opacity: 1, 
+        ease: "back.out(1.7)" 
+      })
+      .to([moon, moonShadow], { 
+        duration: 1, 
+        opacity: 0,
+        ease: "power2.in" 
+      }, "+=1")
+      .to(logoText, { 
+        duration: 0.8, 
+        fontSize: '5rem',
+        opacity: 0,
+        ease: "back.in(1.7)",
+        onComplete: () => {
+          // Hide intro, show main content
+          intro.style.display = 'none';
+          mainContent.style.visibility = 'visible';
+          mainContent.style.opacity = 1;
+          
+          // Initialize the three.js background
+          initThreeJsBackground();
+          
+          // Add floating binary code
+          setInterval(createFloatingCode, 3000);
+          for (let i = 0; i < 5; i++) {
+            createFloatingCode();
           }
-        });
-      }, 1000);
-      
-      setTimeout(() => {
-        clearInterval(updateLoadingText);
-      }, 7000);
+          
+          // Initialize countdown
+          initCountdown();
+        }
+      }, "+=0.2");
     });
     
-    // Main content animations
-    function initMainContent() {
-      // Three.js particle background
+    // Three.js particle background
+    function initThreeJsBackground() {
       const container = document.getElementById('canvas-container');
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -808,7 +936,7 @@
       
       // Create particles
       const particlesGeometry = new THREE.BufferGeometry();
-      const particleCount = 1500;
+      const particleCount = 2000;
       
       const positions = new Float32Array(particleCount * 3);
       const colors = new Float32Array(particleCount * 3);
@@ -819,18 +947,18 @@
         positions[i + 1] = (Math.random() - 0.5) * 1000;
         positions[i + 2] = (Math.random() - 0.8) * 1000;
         
-        // Color - mix of blue, green and purple
+        // Color - mix of purple and blue
         const mixFactor = Math.random();
-        colors[i] = mixFactor > 0.7 ? 0.5 : 0; // R - add some purple
-        colors[i + 1] = mixFactor * 1.0; // G
-        colors[i + 2] = (1 - mixFactor) * 0.9; // B
+        colors[i] = mixFactor * 0.6; // R - purple component
+        colors[i + 1] = mixFactor * 0.3; // G
+        colors[i + 2] = (1 - mixFactor) * 0.8 + 0.2; // B - blue component
       }
       
       particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
       
       const particlesMaterial = new THREE.PointsMaterial({
-        size: 2,
+        size: 2.5,
         vertexColors: true,
         transparent: true,
         opacity: 0.6
@@ -845,8 +973,8 @@
       const animate = () => {
         requestAnimationFrame(animate);
         
-        particleSystem.rotation.y += 0.0005;
-        particleSystem.rotation.x += 0.0002;
+        particleSystem.rotation.y += 0.0003;
+        particleSystem.rotation.x += 0.0001;
         
         renderer.render(scene, camera);
       };
@@ -859,207 +987,95 @@
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
+    }
+    
+    // Countdown initialization
+    function initCountdown() {
+      const countdownElement = document.getElementById('countdown-timer');
       
-      // Animate elements in
-      gsap.to('.cyber-line', {
-        opacity: 0.5,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power2.out"
-      });
+      // Set a random future date (2-3 months from now)
+      const currentDate = new Date();
+      const futureDate = new Date();
+      futureDate.setMonth(currentDate.getMonth() + 2 + Math.floor(Math.random() * 2));
+      futureDate.setDate(Math.floor(Math.random() * 28) + 1);
       
-      // Reveal text animation for glitch title
-      const reveal = document.querySelector('.reveal');
-      gsap.to(reveal.querySelector('::after'), {
-        width: '100%',
-        duration: 1.5,
-        ease: "power2.inOut",
-        onComplete: () => {
-          gsap.to(reveal.querySelector('::after'), {
-            left: '100%',
-            duration: 0.5,
-            ease: "power2.inOut"
-          });
-        }
-      });
-      
-      // Animate matrix text
-      gsap.to('.matrix-text', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.5,
-        ease: "power2.out"
-      });
-      
-      // Animate feature cards
-      gsap.to('.feature-card', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        delay: 1,
-        ease: "back.out(1.2)"
-      });
-      
-      // Animate download button
-      gsap.to('.download-container', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 1.8,
-        ease: "power2.out"
-      });
-      
-      // Animate countdown
-      gsap.to('.countdown', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 2,
-        ease: "power2.out"
-      });
-      
-      // Animate social icons
-      gsap.to('.social-icons', {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 2.2,
-        ease: "power2.out"
-      });
-      
-      // Animate footer
-      gsap.to('footer', {
-        opacity: 0.7,
-        duration: 0.8,
-        delay: 2.4,
-        ease: "power2.out"
-      });
-      
-      // Countdown timer animation
-      const countdownEl = document.getElementById('countdown-timer');
-      setInterval(() => {
-        const days = Math.floor(Math.random() * 30) + 10;
-        const hours = Math.floor(Math.random() * 24);
-        const minutes = Math.floor(Math.random() * 60);
-        const seconds = Math.floor(Math.random() * 60);
+      function updateCountdown() {
+        const now = new Date();
+        const difference = futureDate - now;
         
-        countdownEl.textContent = `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-      }, 1000);
-      
-      // Add floating code elements
-      const createFloatingCode = () => {
-        const element = document.createElement('div');
-        element.classList.add('floating-code');
-        
-        // Generate binary string
-        let binary = '';
-        for (let i = 0; i < Math.floor(Math.random() * 24) + 8; i++) {
-          binary += Math.round(Math.random()).toString();
-          if (i % 8 === 7) binary += ' ';
+        if (difference <= 0) {
+          countdownElement.textContent = "00:00:00";
+          return;
         }
         
-        element.textContent = binary;
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
         
-        // Random position
-        element.style.top = `${Math.random() * 100}%`;
-        element.style.left = `${Math.random() * 100}%`;
-        element.style.opacity = `${Math.random() * 0.2 + 0.1}`;
-        element.style.fontSize = `${Math.random() * 0.5 + 0.7}rem`;
+        const formattedHours = String(days * 24 + hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
         
-        document.body.appendChild(element);
-        
-        // Animate in
-        gsap.fromTo(element, 
-          { opacity: 0, y: -20 },
-          { opacity: parseFloat(element.style.opacity), y: 0, duration: 1 }
-        );
-        
-        // Remove after animation
-        setTimeout(() => {
-          gsap.to(element, {
-            opacity: 0,
-            duration: 1,
-            onComplete: () => element.remove()
-          });
-        }, Math.random() * 10000 + 5000);
-      };
-      
-      // Add floating code periodically
-      setInterval(createFloatingCode, 3000);
-      
-      // Add initial floating code elements
-      for (let i = 0; i < 5; i++) {
-        setTimeout(() => createFloatingCode(), i * 200);
+        countdownElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
       }
       
-      // Mouse glow effect
-      const glowEffect = document.getElementById('glow-effect');
-      
-      document.addEventListener('mousemove', (e) => {
-        gsap.to(glowEffect, {
-          left: e.clientX - 75,
-          top: e.clientY - 75,
-          opacity: 0.6,
-          duration: 0.3
-        });
-      });
-      
-      document.addEventListener('mouseout', () => {
-        gsap.to(glowEffect, {
-          opacity: 0,
-          duration: 0.3
-        });
-      });
-
-      // Interactive elements
-      const downloadBtn = document.querySelector('.download-btn');
-      
-      downloadBtn.addEventListener('mouseenter', () => {
-        gsap.to(downloadBtn, {
-          scale: 1.05,
-          duration: 0.3
-        });
-      });
-      
-      downloadBtn.addEventListener('mouseleave', () => {
-        gsap.to(downloadBtn, {
-          scale: 1,
-          duration: 0.3
-        });
-      });
-      
-      // Easter egg: Konami code
-      let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-      let konamiIndex = 0;
-      
-      document.addEventListener('keydown', (e) => {
-        if (e.key === konamiCode[konamiIndex]) {
-          konamiIndex++;
-          if (konamiIndex === konamiCode.length) {
-            // Easter egg activated
-            document.body.style.setProperty('--neon-green', '#ff00ff');
-            document.body.style.setProperty('--neon-blue', '#00ffff');
-            
-            gsap.to('.cyber-line', {
-              background: 'linear-gradient(90deg, transparent, #ff00ff, transparent)',
-              duration: 1
-            });
-            
-            gsap.fromTo(
-              '.glitch', 
-              { scale: 1 }, 
-              { scale: 1.1, duration: 0.5, yoyo: true, repeat: 3 }
-            );
-            
-            konamiIndex = 0;
-          }
-        } else {
-          konamiIndex = 0;
-        }
-      });
+      // Update countdown every second
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
     }
+    
+    // Add floating binary code elements
+    function createFloatingCode() {
+      const element = document.createElement('div');
+      element.classList.add('floating-code');
+      
+      // Generate binary string
+      let binary = '';
+      for (let i = 0; i < Math.floor(Math.random() * 24) + 8; i++) {
+        binary += Math.round(Math.random()).toString();
+        if (i % 8 === 7) binary += ' ';
+      }
+      
+      element.textContent = binary;
+      
+      // Random position
+      element.style.top = `${Math.random() * 100}%`;
+      element.style.left = `${Math.random() * 100}%`;
+      element.style.opacity = `${Math.random() * 0.2 + 0.1}`;
+      element.style.fontSize = `${Math.random() * 0.5 + 0.7}rem`;
+      
+      document.body.appendChild(element);
+      
+      // Remove after animation
+      setTimeout(() => {
+        element.style.opacity = '0';
+        setTimeout(() => {
+          element.remove();
+        }, 2000);
+      }, Math.random() * 10000 + 5000);
+    }
+    
+    // Button hover effect
+    document.querySelector('.download-btn').addEventListener('mouseover', function() {
+      this.style.transform = 'rotateX(0deg) scale(1.05)';
+    });
+    
+    document.querySelector('.download-btn').addEventListener('mouseout', function() {
+      this.style.transform = 'rotateX(10deg) scale(1)';
+    });
+    
+    // Feature card hover effects
+    const featureCards = document.querySelectorAll('.feature-card');
+    featureCards.forEach(card => {
+      card.addEventListener('mouseover', function() {
+        this.style.transform = 'perspective(1000px) rotateY(5deg) translateY(-10px)';
+      });
+      
+      card.addEventListener('mouseout', function() {
+        this.style.transform = 'perspective(1000px) rotateY(0deg) translateY(0)';
+      });
+    });
   </script>
 </body>
 </html>
